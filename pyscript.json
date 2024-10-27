@@ -1,0 +1,11 @@
+{
+  "packages": [
+    "sympy"
+  ],
+  "files": {
+    "./src/core/__init__.py": "./core/__init__.py",
+    "./src/core/problem.py": "./core/problem.py",
+    "./src/interface/__init__.py": "./interface/__init__.py",
+    "./src/interface/problem.py": "./interface/problem.py"
+  }
+}
