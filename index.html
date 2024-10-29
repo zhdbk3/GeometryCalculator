@@ -9,7 +9,9 @@
     <title>几何计算器 2.0</title>
     <link rel="stylesheet" href="https://pyscript.net/releases/2024.10.1/core.css">
     <script type="module" src="https://pyscript.net/releases/2024.10.1/core.js"></script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!--    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>-->
+    <script id="MathJax-script" async
+            src="https://cdn.bootcdn.net/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
     <link rel="stylesheet" href="./css/style.css">
 </head>
 
@@ -18,14 +20,15 @@
 <div>
     <div class="left-div">
         <h2>设未知数</h2>
-        <label for="symbol-name">名字</label>
+        <label for="symbol-name">名字（不可以是 \(x\) 或 \(y\) ）</label>
+        <br>
         <input id="symbol-name" placeholder="小写英文字母或希腊字母的英文拼写_下标" style="width: 250px;">
         <br>
         <input type="radio" name="symbol-sign" value="R" checked="checked">任意实数
         <input type="radio" name="symbol-sign" value="+">正数
         <input type="radio" name="symbol-sign" value="-">负数
         <br>
-        <button id="create-symbol" py-click="create_symbol">确定</button>
+        <button id="add-symbol" py-click="add_symbol">确定</button>
     </div>
     <div class="right-div">
         <h2>已有的未知数</h2>
@@ -34,13 +37,25 @@
 </div>
 <div>
     <div class="left-div">
-        <h2>创建或修改点</h2>
-        <label for="point-name">名字</label>
+        <h2>添加点</h2>
+        <label for="point-name" class="point-label">名字</label>
         <input id="point-name" placeholder="大写英文字母_下标">
         <br>
-        坐标 (<input id="point-x" placeholder="x 表达式">, <input id="point-y" placeholder="y 表达式">)
+        请填写以下 4 项中的 2 项
         <br>
-        <button id="create-point" py-click="create_point">确定</button>
+        <label for="point-x" class="point-label">横坐标</label>
+        <input id="point-x" placeholder="x 表达式">
+        <br>
+        <label for="point-y" class="point-label">横坐标</label>
+        <input id="point-y" placeholder="y 表达式">
+        <br>
+        <label for="point-line1" class="point-label">所在直线 1</label>
+        <input id="point-line1">
+        <br>
+        <label for="point-line2" class="point-label">所在直线 2</label>
+        <input id="point-line2">
+        <br>
+        <button id="add-point" py-click="add_point">确定</button>
     </div>
     <div class="right-div">
         <h2>已有的点</h2>
@@ -48,7 +63,6 @@
     </div>
 </div>
 <script type="py" src="./src/ui.py" config="./pyscript.json"></script>
-<div id="output"></div>
 </body>
 
 </html>

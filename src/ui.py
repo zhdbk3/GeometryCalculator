@@ -4,6 +4,7 @@
 
 from pyscript import document
 from js import MathJax
+from sympy import Expr, Line2D
 
 from interface import Problem
 
@@ -15,31 +16,35 @@ def output(content) -> None:
     output_div.innerText += f'{content}\n'
 
 
-def create_symbol(event) -> None:
+def add_symbol(event) -> None:
     """创建一个未知数"""
     name = document.querySelector('#symbol-name').value
     sign = document.querySelector('input[name="symbol-sign"]:checked').value
-    problem.create_symbol(name, sign)
+    problem.add_symbol(name, sign)
     # 显示已有的未知数
     show_symbols()
 
 
 def show_symbols() -> None:
     """显示已有的未知数"""
-    symbols_label = document.querySelector('#symbols')
-    symbols_label.innerHTML = problem.symbols_html()
+    symbols_ul = document.querySelector('#symbols')
+    symbols_ul.innerHTML = problem.symbols_html()
     # 重新渲染
     MathJax.typeset()
 
 
-def create_point(event) -> None:
+def add_point(event) -> None:
     """添加一个点"""
+    # TODO: 合法性检查
+
+    # 读取并解析输入
     name = document.querySelector('#point-name').value
-    x = document.querySelector('#point-x').value
-    y = document.querySelector('#point-y').value
-    x = problem.eval(x)
-    y = problem.eval(y)
-    problem.create_point(name, x, y)
+    x0 = problem.eval_expr(document.querySelector('#point-x').value)
+    y0 = problem.eval_expr(document.querySelector('#point-y').value)
+    line1 = problem.eval_line(document.querySelector('#point-line1').value)
+    line2 = problem.eval_line(document.querySelector('#point-line2').value)
+    # 添加点
+    problem.add_point(name, x0, y0, line1, line2)
     # 显示已有的点
     show_points()
 

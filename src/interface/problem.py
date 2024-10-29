@@ -4,7 +4,7 @@
 
 import re
 
-from sympy import (Symbol, latex, Expr,
+from sympy import (Symbol, latex, Expr, Line2D,
                    sqrt, sin, cos, tan)
 
 from core import ProblemCore
@@ -57,15 +57,31 @@ class Problem(ProblemCore):
                      fr'\)</li>')
         return html
 
-    def eval(self, s: str) -> Expr:
+    def eval_expr(self, s: str) -> Expr | None:
         """
-        解析字符串表达式
+        解析字符串表达式，若字符串为空，返回 None
         :param s: 字符串表达式
-        :return: 一个 sympy.Expr 子类对象
+        :return: Expr 子类对象或 None
         """
+        # 判空
+        if len(s) == 0:
+            return None
         # 处理表达式里的未知数
         repl = r'self.symbols["\1"]'
-        for pattern in self.symbols.keys():
-            s = re.sub(fr'\b({pattern})\b', repl, s)
+        for name in self.symbols.keys():
+            s = re.sub(fr'\b({name})\b', repl, s)
+        return eval(s)
 
+    def eval_line(self, s: str) -> Line2D | None:
+        """
+        解析一条直线，若字符串为空，返回 None
+        :param s: 直线，两个点的名字
+        :return: Line2D 对象或 None
+        """
+        # 判空
+        if len(s) == 0:
+            return None
+        pattern = r"([A-Z]_?\d*'*)" * 2  # 一个点名字
+        repl = r'Line2D(self.points["\1"], self.points["\2"])'  # 必须用双引号包裹点名字，因为里面可能有撇
+        s = re.sub(pattern, repl, s)
         return eval(s)

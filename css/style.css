@@ -1,6 +1,6 @@
 .left-div {
     display: inline-block;
-    width: 450px;
+    width: 400px;
 }
 
 .right-div {
@@ -8,6 +8,7 @@
     vertical-align: top;
 }
 
-#output {
-    border: 1px solid pink;
+.point-label {
+    display: inline-block;
+    width: 80px;
 }
