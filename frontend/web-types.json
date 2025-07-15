@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json.schemastore.org/web-types",
+  "framework": "vue",
+  "name": "geometry-calculator-frontend",
+  "version": "2.0.0",
+  "contributions": {
+    "html": {
+      "types-syntax": "typescript",
+      "attributes": [
+        {
+          "name": "v-katex"
+        }
+      ]
+    }
+  }
+}

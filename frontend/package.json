@@ -1,0 +1,47 @@
+{
+  "name": "geometry-calculator-frontend",
+  "version": "2.0.0",
+  "description": "几何计算器的前端，将由 pywebview 运行并与 Python 后端通信。",
+  "productName": "几何计算器 前端",
+  "author": "zhdbk3 (https://space.bilibili.com/551409211)",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "lint": "eslint -c ./eslint.config.js \"./src*/**/*.{ts,js,cjs,mjs,vue}\"",
+    "format": "prettier --write \"**/*.{js,ts,vue,scss,html,md,json}\" --ignore-path .gitignore",
+    "test": "echo \"No test specified\" && exit 0",
+    "dev": "quasar dev",
+    "build": "quasar build",
+    "postinstall": "quasar prepare"
+  },
+  "dependencies": {
+    "@quasar/extras": "^1.17.0",
+    "katex": "^0.16.22",
+    "pinia": "^3.0.3",
+    "quasar": "^2.18.1",
+    "vue": "^3.5.17",
+    "vue-router": "^4.5.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.30.0",
+    "@quasar/app-vite": "^2.2.1",
+    "@types/katex": "^0.16.7",
+    "@types/node": "^24.0.8",
+    "@vue/eslint-config-prettier": "^10.2.0",
+    "@vue/eslint-config-typescript": "^14.5.1",
+    "autoprefixer": "^10.4.21",
+    "eslint": "^9.30.0",
+    "eslint-plugin-vue": "^10.2.0",
+    "globals": "^16.3.0",
+    "prettier": "^3.6.2",
+    "typescript": "~5.8.3",
+    "vite-plugin-checker": "^0.9.3",
+    "vue-tsc": "^2.2.10"
+  },
+  "engines": {
+    "node": "^28 || ^26 || ^24 || ^22 || ^20 || ^18",
+    "npm": ">= 6.13.4",
+    "yarn": ">= 1.21.1"
+  },
+  "web-types": "./web-types.json"
+}

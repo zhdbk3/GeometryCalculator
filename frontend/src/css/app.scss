@@ -1,0 +1,152 @@
+// app global css in SCSS form
+
+/* ================ KaTeX ================ */
+@import 'katex/dist/katex.min.css';
+
+div:has(> span > span.katex),
+div:has(> span > span.katex-display) {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+/* ================ 字体 ================ */
+:root {
+  font-size: 16px;
+  font-family: 'Segoe UI', 'Microsoft YaHei', 'PingFang SC', sans-serif;
+}
+
+body {
+  font-size: unset;
+}
+
+.katex {
+  font-size: 24px;
+}
+
+// 恢复 h1-h6 默认字体属性
+h1 {
+  font-size: 2em;
+}
+
+h2 {
+  font-size: 1.5em;
+}
+
+h3 {
+  font-size: 1.17em;
+}
+
+h4 {
+  font-size: 1em;
+}
+
+h5 {
+  font-size: 0.83em;
+}
+
+h6 {
+  font-size: 0.67em;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: bold;
+  line-height: unset;
+}
+
+/* ================ 路由页面 ================ */
+.q-page {
+  background-color: #f7f9fc;
+  padding-left: 1em;
+  border-width: 1px 0 0 1px;
+  border-style: solid;
+  border-color: #e4e7ea;
+  border-top-left-radius: 7px;
+}
+
+.mobile > .q-page {
+  border-width: 1px 0 0 0;
+  border-top-left-radius: 0;
+}
+
+/* ================ 通用组件样式 ================ */
+// 按钮
+.q-btn {
+  color: black;
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(0, 0, 0, 0.073);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.183);
+  border-radius: 5px;
+  padding: 5px 12px 6px 12px !important;
+  outline: none;
+  margin: 2px;
+}
+
+.q-btn:hover {
+  background: rgba(249, 249, 249, 0.5);
+}
+
+// 主按钮
+.q-btn.primary {
+  color: white;
+  background-color: $primary;
+  border: 1px solid scale-color($primary, $lightness: 10%);
+  border-bottom: 1px solid scale-color($primary, $lightness: -10%);
+}
+
+.q-btn.primary:hover {
+  background-color: scale-color($primary, $lightness: 10%);
+  border-color: scale-color($primary, $lightness: 20%);
+}
+
+.q-btn.primary:disabled {
+  color: rgba(255, 255, 255, 0.9);
+  background-color: rgb(205, 205, 205);
+  border: 1px solid rgb(205, 205, 205);
+}
+
+// 输入框
+input {
+  color: black !important;
+  background-color: rgba(255, 255, 255, 0.7) !important;
+  border: 1px solid rgba(0, 0, 0, 0.05) !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.4) !important;
+  border-radius: 5px !important;
+  padding: 0 10px !important;
+}
+
+input::selection {
+  background-color: scale-color($primary, $lightness: 10%);
+  color: white;
+}
+
+input:hover {
+  background-color: rgba(249, 249, 249, 0.5) !important;
+  border: 1px solid rgba(0, 0, 0, 0.05) !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.4) !important;
+}
+
+input:focus {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05) !important;
+  background-color: white !important;
+}
+
+.q-field__control::before {
+  border-bottom: none !important;
+}
+
+// 复选框
+.q-checkbox__bg {
+  border-radius: 5px;
+  border-width: 1px;
+}
+
+// 对话框
+.q-card {
+  border: 1px solid rgb(200, 200, 200);
+  padding: 14px;
+}

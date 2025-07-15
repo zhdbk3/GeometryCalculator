@@ -1,0 +1,336 @@
+from custom_latex import override_latex
+
+override_latex()
+
+from typing import Never, Optional, Callable
+import re
+import functools
+
+from sympy import Symbol, Expr, simplify, Eq, Line2D, solve, Segment, Point2D, Matrix, acos, sympify
+from sympy import Integer, sqrt, sin, cos, tan, pi  # noqa
+from sympy.logic.boolalg import BooleanTrue, BooleanFalse
+
+from data import MathObj, GCSymbol, GCPoint, Cond, to_raw_latex
+from type_hints import DomainSettings, LatexItem, Status
+from vec_parse_utils import mark_vec_coord, dot
+
+x = Symbol('x', real=True)
+y = Symbol('y', real=True)
+
+# 希腊字母的英文拼写（除 pi 外）
+VALID_GREEK_SPELLINGS = [
+    'alpha', 'beta', 'gamma', 'delta', 'epsilon', 'zeta', 'eta', 'theta',
+    'iota', 'kappa', 'lambda', 'mu', 'nu', 'xi', 'omicron',
+    'rho', 'sigma', 'tau', 'upsilon', 'phi', 'chi', 'psi', 'omega'
+]
+
+
+def track_requirement(func):
+    """在执行访问数学对象的函数时，追踪记录它访问了谁"""
+
+    @functools.wraps(func)
+    def wrapper(self: 'Problem', name: str):
+        self.requirements_tracker.add(self.math_objs[name])
+        return func(self, name)
+
+    return wrapper
+
+
+def try_and_return_status(func):
+    """
+    尝试执行被装饰的函数，并返回是否成功和报错信息（注意：原函数的返回值会被扔掉，所以最好不要有）
+    ``Problem.add_point`` 也是这个逻辑，但它出错后还有自己的事情要干，故不使用本装饰器，自行实现
+    """
+
+    @functools.wraps(func)
+    def wrapper(self: 'Problem', *args, **kwargs) -> Status:
+        try:
+            func(self, *args, **kwargs)
+        except Exception as e:
+            # 清理依赖
+            self.requirements_tracker.clear()
+            return False, f'{e.__class__.__name__}: {e}'
+        else:
+            return True, '好诶~ 成功了喵~（来自装饰器，反正也没人会看到'
+
+    return wrapper
+
+
+class AddBinCond:
+    def __init__(self, rel_op: str):
+        """
+        装饰添加二元条件的方法，在该装饰器内实现把用户输入的两个表达式解析并拼接成 LaTeX 作为该条件的 ``id``，并添加条件
+        这样被装饰方法只要专注于给出解析的方程（组）就行了（这里还会对每个方程进行化简并过滤掉 True）
+        :param rel_op: 该种类条件的关系符，将放在左右两个 LaTeX 的中间
+        """
+        self.rel_op = rel_op
+
+    def __call__(self, func: Callable[['Problem', str, str], list[Eq]]):
+        def wrapper(problem: 'Problem', input1: str, input2: str) -> None | Never:
+            raw_latex = f'{to_raw_latex(input1)} {self.rel_op} {to_raw_latex(input2)}'
+            # 化简方程（组）并过滤 True
+            eqs = []
+            for eq in func(problem, input1, input2):
+                eq = simplify(eq)
+                if isinstance(eq, BooleanFalse):
+                    raise ValueError('该条件不可能成立！')
+                if not isinstance(eq, BooleanTrue):
+                    eqs.append(eq)
+            if len(eqs) == 0:
+                raise ValueError('该条件一定成立，不需要添加')
+            problem.add_cond(Cond(raw_latex, eqs))
+
+        return wrapper
+
+
+class Problem:
+    def __init__(self):
+        self.math_objs: dict[str, MathObj] = {}
+        self.symbol_names: list[str] = []
+        self.point_names: list[str] = []
+        self.cond_ids: list[str] = []
+
+        # 用于临时存放正在添加的新对象依赖哪些对象
+        self.requirements_tracker: set[MathObj] = set()
+
+    def _add_math_obj(self, obj: MathObj) -> None:
+        """添加数学对象，并添加它的依赖关系"""
+        self.math_objs[obj.id] = obj
+        # 添加依赖关系并清空追踪器
+        for requirement in self.requirements_tracker:
+            requirement.add_required_by(obj)
+        self.requirements_tracker.clear()
+
+    def add_cond(self, cond: Cond) -> None:
+        """
+        添加条件并把 ``id`` 加到列表里
+        注意：此处函数名不以下划线开头，是为了方便 Python 中的外部装饰器调用这个方法，该方法不在 TS 中声明暴露
+        """
+        self._add_math_obj(cond)
+        self.cond_ids.append(cond.id)
+
+    @track_requirement
+    def _get_sp_symbol(self, name: str) -> Symbol:
+        return self.math_objs[name].sp_symbol  # type: ignore
+
+    @track_requirement
+    def _get_x_of(self, name: str) -> Expr:
+        return self.math_objs[name].x  # type: ignore
+
+    @track_requirement
+    def _get_y_of(self, name: str) -> Expr:
+        return self.math_objs[name].y  # type: ignore
+
+    @track_requirement
+    def _get_sp_point(self, name: str) -> Point2D:
+        return self.math_objs[name].sp_point  # type: ignore
+
+    def _get_line(self, name: str) -> Line2D:
+        p1 = self._get_sp_point(name[0])
+        p2 = self._get_sp_point(name[1])
+        return Line2D(p1, p2)
+
+    def _get_vec(self, name: str) -> Matrix:
+        """获取向量（实际上是个矩阵）"""
+        initial = self._get_sp_point(name[0])
+        terminal = self._get_sp_point(name[1])
+        return Matrix([terminal.x - initial.x, terminal.y - initial.y])
+
+    def _get_distance(self, name: str) -> Expr:
+        p1 = self._get_sp_point(name[0])
+        p2 = self._get_sp_point(name[1])
+        return Segment(p1, p2).length
+
+    def _get_angle(self, name: str) -> Expr:
+        v1 = self._get_vec(name[1::-1])
+        v2 = self._get_vec(name[1:])
+        return acos(v1.dot(v2) / (v1.norm() * v2.norm()))
+
+    def _eval_str_expr(self, expr: str) -> Expr | Never:
+        """
+        尝试解析字符串表达式，解析失败会报错
+        别听 IDE 瞎说，这不是静态方法，``self`` 在 ``eval`` 里要用的
+        """
+        expr = mark_vec_coord(expr)
+        rules = [
+            # dot -> @ dot @
+            ('dot', '@ dot @'),
+            # 处理未知数（不考虑排除 x, y 了，反正最后会报错）
+            (r'\b([a-z]|' + '|'.join(VALID_GREEK_SPELLINGS) + r')\b', r"self._get_sp_symbol('\1')"),
+            # 处理访问点坐标
+            (r'\b(x|y)_([A-Z])\b', r"self._get_\1_of('\2')"),
+            # 处理线段长度
+            (r'\b([A-Z]{2})\b', r"self._get_distance('\1')"),
+            # 处理角度
+            (r'\bang([A-Z]{3})\b', r"self._get_angle('\1')"),  # bang! 我这奇妙的笑点 233
+            # 处理两个大写字母的向量
+            (r'\bvec([A-Z]{2})\b', r"self._get_vec('\1')")
+        ]
+        for pattern, repl in rules:
+            expr = re.sub(pattern, repl, expr)
+        return simplify(sympify(expr, locals={'self': self, 'dot': dot}))
+
+    def add_symbol(self, name: str, domain_settings: Optional[DomainSettings] = None):
+        self._add_math_obj(GCSymbol(name, domain_settings))
+        self.symbol_names.append(name)
+
+    def add_point(self, name: str, x_str: str, y_str: str, line1: str, line2: str) -> Status:
+        """
+        尝试添加点，并相应地添加依赖关系
+        前端会发来 4 个字符串，其中 2 个是有内容的
+        :param name: 点名称
+        :param x_str: 横坐标的字符串表达式，若为 x 则设未知数
+        :param y_str: 纵坐标的字符串表达式，若为 y 则设未知数
+        :param line1: 该点所在的直线 1
+        :param line2: 该点所在的直线 2
+        :return: (是否添加成功, 报错信息)
+        """
+        try:
+            eqs: list[Eq] = []
+            required_by_new_symbols: set[str] = set()
+
+            # 设未知数
+            if x_str == 'x':
+                self.add_symbol(f'x_{name}')
+            if y_str == 'y':
+                self.add_symbol(f'y_{name}')
+
+            # 先设完未知数再读取处理，防止干扰依赖关系
+            if x_str != '':
+                if x_str == 'x':
+                    eqs.append(Eq(x, self._get_sp_symbol(f'x_{name}')))
+                    required_by_new_symbols.add(f'x_{name}')
+                else:
+                    eqs.append(Eq(x, self._eval_str_expr(x_str)))
+                    required_by_new_symbols.add('x')
+            if y_str != '':
+                if y_str == 'y':
+                    eqs.append(Eq(y, self._get_sp_symbol(f'y_{name}')))
+                else:
+                    eqs.append(Eq(y, self._eval_str_expr(y_str)))
+
+            for l in [line1, line2]:
+                if l != '':
+                    eqs.append(self._get_line(l).equation())
+
+            # 求解点坐标并添加
+            solution = solve(eqs, x, y, dict=True)[0]
+            point = GCPoint(name, solution[x], solution[y])
+            # 反向添加设的未知数对点的依赖，这样在删除点时该点的未知数也会被删除
+            point.required_by |= required_by_new_symbols
+            self._add_math_obj(point)
+            self.point_names.append(name)
+
+        except Exception as e:
+            # 清理可能添加的未知数
+            for name in (f'x_{name}', f'y_{name}'):
+                if name in self.symbol_names:
+                    self.symbol_names.remove(name)
+                    del self.math_objs[name]
+            self.requirements_tracker.clear()
+            return False, f'{e.__class__.__name__} :{str(e)}'
+
+        else:
+            return True, '好诶~ 成功了喵~（反正没人会看到这个消息'
+
+    @try_and_return_status
+    @AddBinCond('=')
+    def add_expr_eq(self, input1: str, input2: str) -> list[Eq]:
+        """两表达式相等"""
+        return [Eq(self._eval_str_expr(input1), self._eval_str_expr(input2))]
+
+    @try_and_return_status
+    @AddBinCond(r'\parallel')
+    def add_parallel(self, input1: str, input2: str) -> list[Eq]:
+        """
+        两直线平行
+        根据 https://github.com/YuzhenQin/GeometryCalculator/issues/2，不应用斜截式，而应用一般式，下同
+        """
+        a1, b1, _ = self._get_line(input1).coefficients
+        a2, b2, _ = self._get_line(input2).coefficients
+        return [Eq(a1 * b2, a2 * b1)]
+
+    @try_and_return_status
+    @AddBinCond(r'\perp')
+    def add_perp(self, input1: str, input2: str) -> list[Eq]:
+        """两直线垂直"""
+        a1, b1, _ = self._get_line(input1).coefficients
+        a2, b2, _ = self._get_line(input2).coefficients
+        return [Eq(a1 * a2 + b1 * b2, 0)]
+
+    @try_and_return_status
+    @AddBinCond(r'\cong')
+    def add_cong(self, input1: str, input2: str) -> list[Eq]:
+        """三角形全等（SSS）"""
+        a1, b1, c1 = input1[:2], input1[1:], input1[0] + input1[2]
+        a2, b2, c2 = input2[:2], input2[1:], input2[0] + input2[2]
+        eqs = []
+        for s1, s2 in [(a1, a2), (b1, b2), (c1, c2)]:
+            eqs.append(Eq(self._get_distance(s1), self._get_distance(s2)))
+        return eqs
+
+    @try_and_return_status
+    @AddBinCond(r'\sim')
+    def add_sim(self, input1: str, input2: str) -> list[Eq]:
+        """三角形相似 (SSS)"""
+        a1, b1, c1 = input1[:2], input1[1:], input1[0] + input1[2]
+        a2, b2, c2 = input2[:2], input2[1:], input2[0] + input2[2]
+        k1 = self._get_distance(a1) / self._get_distance(a2)
+        k2 = self._get_distance(b1) / self._get_distance(b2)
+        k3 = self._get_distance(c1) / self._get_distance(c2)
+        return [Eq(k1, k2), Eq(k2, k3)]
+
+    def get_symbol_names(self) -> list[str]:
+        return self.symbol_names
+
+    def get_point_names(self) -> list[str]:
+        return self.point_names
+
+    def get_symbols_latex(self) -> list[LatexItem]:
+        """
+        获取需要在前端页面上展示的符号的 LaTeX，包含取值范围（含始末 $ $）
+        相同取值范围的符号会被并到一起
+        :return: 一个列表，每项为一个字典（对象）
+                 id: 取值范围的 LaTeX，用于前端 ``v-for`` 的 ``key``
+                 latex: 该取值范围的完整的 LaTeX
+        """
+        # 将每个符号名挂到其取值范围上
+        domain_names_dict: dict[str, list[str]] = {}
+        for name in self.symbol_names:
+            gc_symbol: GCSymbol = self.math_objs[name]  # type: ignore
+            name_latex = gc_symbol.get_name_latex()
+            domain_latex = gc_symbol.get_domain_latex()
+            if domain_latex not in domain_names_dict:
+                domain_names_dict[domain_latex] = []
+            domain_names_dict[domain_latex].append(name_latex)
+
+        # 生成结果
+        result = []
+        for domain, names in domain_names_dict.items():
+            result.append({
+                'id': domain,
+                'latex': fr"$ \displaystyle {', '.join(names)} \in {domain} $"
+            })
+
+        return result
+
+    def get_points_latex(self) -> list[LatexItem]:
+        """获取所有点的 LaTeX（含始末 $ $）"""
+        result = []
+        for name in self.point_names:
+            result.append({
+                'id': name,
+                'latex': fr'$ \displaystyle {self.math_objs[name].get_latex()} $'  # type: ignore
+            })
+        return result
+
+    def get_conds_latex(self) -> list[LatexItem]:
+        """获取所有条件的 LaTeX，包括原始的和方程的（均含始末 $ $）"""
+        result = []
+        for cond_id in self.cond_ids:
+            cond: Cond = self.math_objs[cond_id]  # type: ignore
+            result.append({
+                'id': fr'$$ {cond.get_raw_latex()} $$',
+                'latex': cond.get_eqs_latex()
+            })
+        return result
