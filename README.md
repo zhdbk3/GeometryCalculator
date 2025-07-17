@@ -6,13 +6,19 @@
 
 在 `frontend/` 目录下执行：
 
-```shell
+```bash
 pnpm install
 ```
 
 在 `backend/` 目录下执行：
 
-```shell
+```bash
+uv sync
+```
+
+或
+
+```bash
 pip install -r requirements.txt
 ```
 
@@ -20,7 +26,7 @@ pip install -r requirements.txt
 
 在 `frontend/` 目录下执行：
 
-```shell
+```bash
 quasar dev
 ```
 
