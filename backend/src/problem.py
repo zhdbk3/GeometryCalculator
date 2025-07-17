@@ -5,9 +5,10 @@ override_latex()
 from typing import Never, Optional, Callable
 import re
 import functools
+from abc import ABC, abstractmethod
 
 from sympy import Symbol, Expr, simplify, Eq, Line2D, solve, Segment, Point2D, Matrix, acos, sympify
-from sympy import Integer, sqrt, sin, cos, tan, pi  # noqa
+from sympy import sqrt, sin, cos, tan, pi  # noqa
 from sympy.logic.boolalg import BooleanTrue, BooleanFalse
 
 from data import MathObj, GCSymbol, GCPoint, Cond, to_raw_latex
@@ -56,21 +57,26 @@ def try_and_return_status(func):
     return wrapper
 
 
-class AddBinCond:
-    def __init__(self, rel_op: str):
+class AddCond(ABC):
+    def __init__(self, op: str):
         """
-        装饰添加二元条件的方法，在该装饰器内实现把用户输入的两个表达式解析并拼接成 LaTeX 作为该条件的 ``id``，并添加条件
+        装饰添加条件的方法，在该装饰器内实现把用户输入的表达式解析并拼接成 LaTeX 作为该条件的 ``id``，并添加条件
         这样被装饰方法只要专注于给出解析的方程（组）就行了（这里还会对每个方程进行化简并过滤掉 True）
-        :param rel_op: 该种类条件的关系符，将放在左右两个 LaTeX 的中间
+        :param op: 该种类条件的符号（可能是放在中间的关系符，也可能是放在前面的图形类型）
         """
-        self.rel_op = rel_op
+        self.op = op
+
+    @abstractmethod
+    def get_raw_latex(self, *args) -> str:
+        """给出原始形式的 LaTeX"""
+        ...
 
     def __call__(self, func: Callable[['Problem', str, str], list[Eq]]):
-        def wrapper(problem: 'Problem', input1: str, input2: str) -> None | Never:
-            raw_latex = f'{to_raw_latex(input1)} {self.rel_op} {to_raw_latex(input2)}'
+        def wrapper(problem: 'Problem', *args) -> None | Never:
+            raw_latex = self.get_raw_latex(*args)
             # 化简方程（组）并过滤 True
             eqs = []
-            for eq in func(problem, input1, input2):
+            for eq in func(problem, *args):
                 eq = simplify(eq)
                 if isinstance(eq, BooleanFalse):
                     raise ValueError('该条件不可能成立！')
@@ -81,6 +87,16 @@ class AddBinCond:
             problem.add_cond(Cond(raw_latex, eqs))
 
         return wrapper
+
+
+class AddBinCond(AddCond):
+    def get_raw_latex(self, input1: str, input2: str) -> str:
+        return f'{to_raw_latex(input1)} {self.op} {to_raw_latex(input2)}'
+
+
+class AddUnaryCond(AddCond):
+    def get_raw_latex(self, input1: str) -> str:
+        return f'{self.op} {input1}'
 
 
 class Problem:
@@ -279,6 +295,52 @@ class Problem:
         k2 = self._get_distance(b1) / self._get_distance(b2)
         k3 = self._get_distance(c1) / self._get_distance(c2)
         return [Eq(k1, k2), Eq(k2, k3)]
+
+    @try_and_return_status
+    @AddUnaryCond('平行四边形')
+    def add_parallelogram(self, input1: str) -> list[Eq]:
+        v1 = self._get_vec(input1[:2])
+        v2 = self._get_vec(input1[:1:-1])
+        return [Eq(v1, v2)]
+
+    @try_and_return_status
+    @AddUnaryCond('菱形')
+    def add_rhombus(self, input1: str) -> list[Eq]:
+        opposite1, opposite2 = input1[:2], input1[:1:-1]
+        adjacent = input1[1:3]
+        return [
+            Eq(self._get_vec(opposite1), self._get_vec(opposite2)),
+            Eq(self._get_distance(opposite1), self._get_distance(adjacent))
+        ]
+
+    @try_and_return_status
+    @AddUnaryCond('矩形')
+    def add_rect(self, input1: str) -> list[Eq]:
+        opposite1, opposite2 = input1[:2], input1[:1:-1]
+        adjacent = input1[1:3]
+        return [
+            Eq(self._get_vec(opposite1), self._get_vec(opposite2)),
+            Eq(self._get_vec(opposite1) @ dot @ self._get_vec(adjacent), 0)
+        ]
+
+    @try_and_return_status
+    @AddUnaryCond('正方形')
+    def add_square(self, input1: str) -> list[Eq]:
+        opposite1, opposite2 = input1[:2], input1[:1:-1]
+        adjacent = input1[1:3]
+        return [
+            Eq(self._get_vec(opposite1), self._get_vec(opposite2)),
+            Eq(self._get_distance(opposite1), self._get_distance(adjacent)),
+            Eq(self._get_vec(opposite1) @ dot @ self._get_vec(adjacent), 0)
+        ]
+
+    @try_and_return_status
+    @AddUnaryCond('等边三角形')
+    def add_equilateral_triangle(self, input1: str) -> list[Eq]:
+        s1 = self._get_distance(input1[:2])
+        s2 = self._get_distance(input1[1:])
+        s3 = self._get_distance(input1[0] + input1[2])
+        return [Eq(s1, s2), Eq(s2, s3)]
 
     def get_symbol_names(self) -> list[str]:
         return self.symbol_names

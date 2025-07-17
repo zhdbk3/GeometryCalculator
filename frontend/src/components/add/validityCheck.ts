@@ -87,8 +87,22 @@ function isValidPolygonName(name: string, n: number) {
 }
 
 /**
+ * 是合法的三角形名
+ */
+export function isValidTriangleName(name: string) {
+  return isValidPolygonName(name, 3);
+}
+
+/**
+ * 是合法的四边形名
+ */
+export function isValidQuadrilateralName(name: string) {
+  return isValidPolygonName(name, 4);
+}
+
+/**
  * 两者都是合法的三角形名
  */
 export function areBothValidTriangleNames(input1: string, input2: string) {
-  return isValidPolygonName(input1, 3) && isValidPolygonName(input2, 3);
+  return isValidTriangleName(input1) && isValidTriangleName(input2);
 }
