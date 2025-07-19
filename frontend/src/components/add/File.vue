@@ -1,7 +1,7 @@
 <template>
   <q-btn :icon="ionSaveOutline" @click="saveToFile">保存到文件</q-btn>
   <q-btn :icon="ionOpenOutline" @click="warningOpen = true">从文件加载</q-btn>
-  <q-dialog v-model="warningOpen">
+  <q-dialog v-model="warningOpen" persistent>
     <q-card>
       <q-card-section>
         <h1 class="text-warning">警告：请勿打开不受信任的 pickle 文件！</h1>
@@ -38,12 +38,13 @@ function saveToFile() {
 }
 
 function loadFromFile() {
-  void window.pywebview.api.problem.load_from_file().then(([successful, msg]) => {
-    if (successful) {
+  window.pywebview.api.problem
+    .load_from_file()
+    .then(() => {
       updateState();
-    } else {
-      alert('加载出错：\n' + msg);
-    }
-  });
+    })
+    .catch((e) => {
+      alert('加载出错：\n' + e);
+    });
 }
 </script>

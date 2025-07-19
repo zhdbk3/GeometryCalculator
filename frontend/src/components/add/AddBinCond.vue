@@ -59,17 +59,17 @@ function reset() {
 const dataStore = useDataStore();
 
 function submit() {
-  void submitFunc(input1.value, input2.value).then(([successful, msg]) => {
-    if (successful) {
+  submitFunc(input1.value, input2.value)
+    .then(() => {
       void window.pywebview.api.problem.get_cond_ids().then((result) => {
         Object.assign(dataStore.condIds, result);
       });
       dialogOpen.value = false;
       reset();
-    } else {
-      alert('解析失败 qwq\n' + msg);
-    }
-  });
+    })
+    .catch((e) => {
+      alert('解析失败 qwq\n' + e);
+    });
 }
 </script>
 

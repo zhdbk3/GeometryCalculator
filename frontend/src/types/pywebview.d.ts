@@ -9,10 +9,8 @@ export interface LatexItem {
   latex: string;
 }
 
-export type Status = [boolean, string];
-
-export type AddBinCondFunc = (input1: string, input2: string) => Promise<Status>;
-export type AddUnaryCondFunc = (input1: string) => Promise<Status>;
+export type AddBinCondFunc = (input1: string, input2: string) => Promise<null>;
+export type AddUnaryCondFunc = (input1: string) => Promise<null>;
 
 declare global {
   interface Window {
@@ -29,7 +27,7 @@ declare global {
             y_str: string,
             line1: string,
             line2: string,
-          ) => Promise<Status>;
+          ) => Promise<null>;
 
           add_expr_eq: AddBinCondFunc;
           add_parallel: AddBinCondFunc;
@@ -55,7 +53,9 @@ declare global {
           del_objs: (ids: Array<string>) => Promise<null>;
 
           save_to_file: () => Promise<null>;
-          load_from_file: () => Promise<Status>;
+          load_from_file: () => Promise<null>;
+
+          solve: (expr: string) => Promise<Array<string>>;
         };
       };
     };

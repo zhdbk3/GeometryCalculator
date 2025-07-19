@@ -77,23 +77,22 @@ function reset() {
 const dataStore = useDataStore();
 
 function submit() {
-  void window.pywebview.api.problem
+  window.pywebview.api.problem
     .add_point(name.value, x_str.value, y_str.value, line1.value, line2.value)
-    .then(([successful, msg]) => {
-      if (successful) {
-        dataStore.pointNames.push(name.value);
-        // 可能有未知数的添加
-        if (x_str.value === 'x' || y_str.value === 'y') {
-          void window.pywebview.api.problem.get_symbol_names().then((result) => {
-            Object.assign(dataStore.symbolNames, result);
-          });
-        }
-        // 一定要最后再重置
-        dialogOpen.value = false;
-        reset();
-      } else {
-        alert('解析失败 qwq\n' + msg);
+    .then(() => {
+      dataStore.pointNames.push(name.value);
+      // 可能有未知数的添加
+      if (x_str.value === 'x' || y_str.value === 'y') {
+        void window.pywebview.api.problem.get_symbol_names().then((result) => {
+          Object.assign(dataStore.symbolNames, result);
+        });
       }
+      // 一定要最后再重置
+      dialogOpen.value = false;
+      reset();
+    })
+    .catch((e) => {
+      alert('解析失败 qwq\n' + e);
     });
 }
 </script>

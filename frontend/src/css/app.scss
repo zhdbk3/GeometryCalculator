@@ -61,7 +61,7 @@ h6 {
 /* ================ 路由页面 ================ */
 .q-page {
   background-color: #f7f9fc;
-  padding-left: 1em;
+  padding: 1em;
   border-width: 1px 0 0 1px;
   border-style: solid;
   border-color: #e4e7ea;
@@ -168,4 +168,9 @@ input:focus {
 
 .q-select .q-field__native {
   padding-left: 12px;
+}
+
+// 对话框
+.q-card {
+  border-radius: 10px !important;
 }

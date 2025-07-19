@@ -10,6 +10,3 @@ class DomainSettings(TypedDict):
 class LatexItem(TypedDict):
     id: str
     latex: str
-
-
-Status = tuple[bool, str]

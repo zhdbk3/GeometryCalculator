@@ -9,13 +9,13 @@ from abc import ABC, abstractmethod
 from collections import deque
 import pickle
 
-from sympy import Symbol, Expr, simplify, Eq, Line2D, solve, Segment, Point2D, Matrix, acos, sympify
+from sympy import Symbol, Expr, simplify, Eq, Line2D, solve, Segment, Point2D, Matrix, acos, latex
 from sympy import sqrt, sin, cos, tan, pi  # noqa
 from sympy.logic.boolalg import BooleanTrue, BooleanFalse
 from webview import windows, SAVE_DIALOG, OPEN_DIALOG
 
 from data import MathObj, GCSymbol, GCPoint, Cond, to_raw_latex
-from type_hints import DomainSettings, LatexItem, Status
+from type_hints import DomainSettings, LatexItem
 from vec_parse_utils import mark_vec_coord, dot
 
 x = Symbol('x', real=True)
@@ -36,26 +36,6 @@ def track_requirement(func):
     def wrapper(self: 'Problem', name: str):
         self.requirements_tracker.add(self.math_objs[name])
         return func(self, name)
-
-    return wrapper
-
-
-def try_and_return_status(func):
-    """
-    尝试执行被装饰的函数，并返回是否成功和报错信息（注意：原函数的返回值会被扔掉，所以最好不要有）
-    ``Problem.add_point`` 也是这个逻辑，但它出错后还有自己的事情要干，故不使用本装饰器，自行实现
-    """
-
-    @functools.wraps(func)
-    def wrapper(self: 'Problem', *args, **kwargs) -> Status:
-        try:
-            func(self, *args, **kwargs)
-        except Exception as e:
-            # 清理依赖
-            self.requirements_tracker.clear()
-            return False, f'{e.__class__.__name__}: {e}'
-        else:
-            return True, '好诶~ 成功了喵~（来自装饰器，反正也没人会看到'
 
     return wrapper
 
@@ -187,13 +167,13 @@ class Problem:
         ]
         for pattern, repl in rules:
             expr = re.sub(pattern, repl, expr)
-        return simplify(sympify(expr, locals={'self': self, 'dot': dot}))
+        return simplify(eval(expr))  # 不能用 ``sympy.sympify``，不然碰到没有的符号它会自己造
 
     def add_symbol(self, name: str, domain_settings: Optional[DomainSettings] = None):
         self._add_math_obj(GCSymbol(name, domain_settings))
         self.symbol_names.append(name)
 
-    def add_point(self, name: str, x_str: str, y_str: str, line1: str, line2: str) -> Status:
+    def add_point(self, name: str, x_str: str, y_str: str, line1: str, line2: str) -> None:
         """
         尝试添加点，并相应地添加依赖关系
         前端会发来 4 个字符串，其中 2 个是有内容的
@@ -202,7 +182,6 @@ class Problem:
         :param y_str: 纵坐标的字符串表达式，若为 y 则设未知数
         :param line1: 该点所在的直线 1
         :param line2: 该点所在的直线 2
-        :return: (是否添加成功, 报错信息)
         """
         try:
             eqs: list[Eq] = []
@@ -247,18 +226,13 @@ class Problem:
                     self.symbol_names.remove(name)
                     del self.math_objs[name]
             self.requirements_tracker.clear()
-            return False, f'{e.__class__.__name__} :{str(e)}'
+            raise e
 
-        else:
-            return True, '好诶~ 成功了喵~（反正没人会看到这个消息'
-
-    @try_and_return_status
     @AddBinCond('=')
     def add_expr_eq(self, input1: str, input2: str) -> list[Eq]:
         """两表达式相等"""
         return [Eq(self._eval_str_expr(input1), self._eval_str_expr(input2))]
 
-    @try_and_return_status
     @AddBinCond(r'\parallel')
     def add_parallel(self, input1: str, input2: str) -> list[Eq]:
         """
@@ -269,7 +243,6 @@ class Problem:
         a2, b2, _ = self._get_line(input2).coefficients
         return [Eq(a1 * b2, a2 * b1)]
 
-    @try_and_return_status
     @AddBinCond(r'\perp')
     def add_perp(self, input1: str, input2: str) -> list[Eq]:
         """两直线垂直"""
@@ -277,7 +250,6 @@ class Problem:
         a2, b2, _ = self._get_line(input2).coefficients
         return [Eq(a1 * a2 + b1 * b2, 0)]
 
-    @try_and_return_status
     @AddBinCond(r'\cong')
     def add_cong(self, input1: str, input2: str) -> list[Eq]:
         """三角形全等（SSS）"""
@@ -288,7 +260,6 @@ class Problem:
             eqs.append(Eq(self._get_distance(s1), self._get_distance(s2)))
         return eqs
 
-    @try_and_return_status
     @AddBinCond(r'\sim')
     def add_sim(self, input1: str, input2: str) -> list[Eq]:
         """三角形相似 (SSS)"""
@@ -299,14 +270,12 @@ class Problem:
         k3 = self._get_distance(c1) / self._get_distance(c2)
         return [Eq(k1, k2), Eq(k2, k3)]
 
-    @try_and_return_status
     @AddUnaryCond('平行四边形')
     def add_parallelogram(self, input1: str) -> list[Eq]:
         v1 = self._get_vec(input1[:2])
         v2 = self._get_vec(input1[:1:-1])
         return [Eq(v1, v2)]
 
-    @try_and_return_status
     @AddUnaryCond('菱形')
     def add_rhombus(self, input1: str) -> list[Eq]:
         opposite1, opposite2 = input1[:2], input1[:1:-1]
@@ -316,7 +285,6 @@ class Problem:
             Eq(self._get_distance(opposite1), self._get_distance(adjacent))
         ]
 
-    @try_and_return_status
     @AddUnaryCond('矩形')
     def add_rect(self, input1: str) -> list[Eq]:
         opposite1, opposite2 = input1[:2], input1[:1:-1]
@@ -326,7 +294,6 @@ class Problem:
             Eq(self._get_vec(opposite1) @ dot @ self._get_vec(adjacent), 0)
         ]
 
-    @try_and_return_status
     @AddUnaryCond('正方形')
     def add_square(self, input1: str) -> list[Eq]:
         opposite1, opposite2 = input1[:2], input1[:1:-1]
@@ -337,7 +304,6 @@ class Problem:
             Eq(self._get_vec(opposite1) @ dot @ self._get_vec(adjacent), 0)
         ]
 
-    @try_and_return_status
     @AddUnaryCond('等边三角形')
     def add_equilateral_triangle(self, input1: str) -> list[Eq]:
         s1 = self._get_distance(input1[:2])
@@ -444,10 +410,28 @@ class Problem:
             with open(path, 'wb') as f:
                 pickle.dump(self, f)
 
-    @try_and_return_status
     def load_from_file(self) -> None:
         path = windows[0].create_file_dialog(OPEN_DIALOG, file_types=('几何计算器 pickle 文件 (*.gc.pkl)',))
         if path is not None:
             path = path[0]
             with open(path, 'rb') as f:
                 self.__dict__ = pickle.load(f).__dict__
+
+    def solve(self, expr: str) -> list[str]:
+        """
+        🚀 启动！
+        :param expr: 要求解的目标的字符串表达式
+        :return: 所有可能的解的 LaTeX
+        """
+        left = to_raw_latex(expr)
+
+        target = Symbol('target')
+        eqs = [Eq(target, self._eval_str_expr(expr))]
+        for i in self.cond_ids:
+            eqs.extend(self.math_objs[i].eqs)  # type: ignore
+        symbols = [target] + [self.math_objs[i].sp_symbol for i in self.symbol_names]  # type: ignore
+        solutions = solve(eqs, symbols, dict=True)
+
+        result = set(s[target] for s in solutions)
+        result = [f'{left} = {latex(i)}' for i in result]
+        return result
