@@ -38,8 +38,12 @@ function saveToFile() {
 }
 
 function loadFromFile() {
-  void window.pywebview.api.problem.load_from_file().then(() => {
-    updateState();
+  void window.pywebview.api.problem.load_from_file().then(([successful, msg]) => {
+    if (successful) {
+      updateState();
+    } else {
+      alert('加载出错：\n' + msg);
+    }
   });
 }
 </script>

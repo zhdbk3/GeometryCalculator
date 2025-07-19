@@ -444,6 +444,7 @@ class Problem:
             with open(path, 'wb') as f:
                 pickle.dump(self, f)
 
+    @try_and_return_status
     def load_from_file(self) -> None:
         path = windows[0].create_file_dialog(OPEN_DIALOG, file_types=('几何计算器 pickle 文件 (*.gc.pkl)',))
         if path is not None:
