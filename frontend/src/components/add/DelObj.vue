@@ -5,7 +5,7 @@
       <q-form @reset="reset" @submit="submit">
         <q-card-section>
           <h1 class="text-negative">删除对象</h1>
-          <q-select v-model="toDel" :options="options" dense>
+          <q-select v-model="toDel" :options="options" dense v-katex>
             <template v-slot:option="scope">
               <q-item v-bind="scope.itemProps">
                 <q-item-section>
