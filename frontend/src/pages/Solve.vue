@@ -39,10 +39,12 @@ function solve() {
         result.push('无解');
       }
       solutions.value = result;
-      solving.value = false;
     })
     .catch((e) => {
       alert('求解出错 qwq\n' + e);
+    })
+    .finally(() => {
+      solving.value = false;
     });
 }
 
