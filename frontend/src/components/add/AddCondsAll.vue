@@ -84,5 +84,3 @@ const addUnaryCondPropsArray: Array<AddUnaryCondProps> = [
   },
 ];
 </script>
-
-<style scoped></style>

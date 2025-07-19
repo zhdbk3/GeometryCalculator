@@ -43,5 +43,3 @@ function loadFromFile() {
   });
 }
 </script>
-
-<style scoped></style>
