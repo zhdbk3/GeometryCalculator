@@ -12,6 +12,8 @@
         />
 
         <q-toolbar-title v-katex>几何计算器 $\textit{Geometry Calculator}$</q-toolbar-title>
+
+        <div v-katex>$ v2.0.0 $</div>
       </q-toolbar>
     </q-header>
 
