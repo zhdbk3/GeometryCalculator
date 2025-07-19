@@ -53,6 +53,9 @@ declare global {
 
           get_deeply_required_by: (id: string) => Promise<Array<string>>;
           del_objs: (ids: Array<string>) => Promise<null>;
+
+          save_to_file: () => Promise<null>;
+          load_from_file: () => Promise<Status>;
         };
       };
     };

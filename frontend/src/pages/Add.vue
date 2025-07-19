@@ -32,6 +32,7 @@
     </div>
     <hr />
     <DelObj />
+    <File />
   </q-page>
 </template>
 
@@ -43,6 +44,7 @@ import ShowPoints from 'components/add/ShowPoints.vue';
 import AddCondsAll from 'components/add/AddCondsAll.vue';
 import ShowConds from 'components/add/ShowConds.vue';
 import DelObj from 'components/add/DelObj.vue';
+import File from 'components/add/File.vue';
 </script>
 
 <style scoped>

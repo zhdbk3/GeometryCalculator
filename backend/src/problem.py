@@ -7,10 +7,12 @@ import re
 import functools
 from abc import ABC, abstractmethod
 from collections import deque
+import pickle
 
 from sympy import Symbol, Expr, simplify, Eq, Line2D, solve, Segment, Point2D, Matrix, acos, sympify
 from sympy import sqrt, sin, cos, tan, pi  # noqa
 from sympy.logic.boolalg import BooleanTrue, BooleanFalse
+from webview import windows, SAVE_DIALOG, OPEN_DIALOG
 
 from data import MathObj, GCSymbol, GCPoint, Cond, to_raw_latex
 from type_hints import DomainSettings, LatexItem, Status
@@ -433,3 +435,18 @@ class Problem:
         # 删除依赖关系
         for obj in self.math_objs.values():
             obj.required_by -= set(ids)
+
+    def save_to_file(self) -> None:
+        path = windows[0].create_file_dialog(SAVE_DIALOG, file_types=('几何计算器 pickle 文件 (*.gc.pkl)',))
+        if path is not None:
+            # path = path[0]
+            # # https://github.com/r0x0r/pywebview/issues/1677
+            with open(path, 'wb') as f:
+                pickle.dump(self, f)
+
+    def load_from_file(self) -> None:
+        path = windows[0].create_file_dialog(OPEN_DIALOG, file_types=('几何计算器 pickle 文件 (*.gc.pkl)',))
+        if path is not None:
+            path = path[0]
+            with open(path, 'rb') as f:
+                self.__dict__ = pickle.load(f).__dict__

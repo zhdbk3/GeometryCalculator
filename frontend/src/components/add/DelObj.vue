@@ -42,6 +42,7 @@ import { ionTrashOutline } from '@quasar/extras/ionicons-v8';
 import { ref, computed, watch } from 'vue';
 import { useDataStore } from 'stores/data';
 import { wrapInline } from 'components/add/wrapLatex';
+import { updateState } from 'components/add/updateState';
 
 const problem = window.pywebview.api.problem;
 
@@ -72,17 +73,7 @@ watch(toDel, () => {
 function submit() {
   // 删除该对象及其依赖
   void problem.del_objs(deeplyRequiredBy.value.concat([toDel.value as string])).then(() => {
-    // 更新各名单
-    for (const [sourceFunc, target] of [
-      [problem.get_symbol_names, dataStore.symbolNames],
-      [problem.get_point_names, dataStore.pointNames],
-      [problem.get_cond_ids, dataStore.condIds],
-    ] as Array<[() => Promise<Array<string>>, Array<string>]>) {
-      void sourceFunc().then((result) => {
-        target.length = 0; // 数组内元素减少，assign 前需先清空数组
-        Object.assign(target, result);
-      });
-    }
+    updateState();
   });
   reset();
 }

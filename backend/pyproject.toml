@@ -5,7 +5,7 @@ description = "几何计算器 后端"
 #readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
-    "pywebview>=5.4",
+    "pywebview==5.4",
     "sympy>=1.14.0",
 ]
 
