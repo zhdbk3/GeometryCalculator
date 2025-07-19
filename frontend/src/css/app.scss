@@ -150,3 +150,22 @@ input:focus {
   border: 1px solid rgb(200, 200, 200);
   padding: 14px;
 }
+
+// 下拉选择框
+.q-select {
+  border: 1px solid rgba(0, 0, 0, 0.073);
+  border-radius: 5px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.183);
+  color: black;
+  background-color: rgba(255, 255, 255, 0.7);
+  text-align: left;
+  outline: none;
+}
+
+.q-select:hover {
+  background-color: rgba(249, 249, 249, 0.5);
+}
+
+.q-select .q-field__native {
+  padding-left: 12px;
+}

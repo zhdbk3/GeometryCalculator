@@ -47,7 +47,9 @@ const dataStore = useDataStore();
 function submit() {
   void submitFunc(input1.value).then(([successful, msg]) => {
     if (successful) {
-      dataStore.condsCounter++;
+      void window.pywebview.api.problem.get_cond_ids().then((result) => {
+        Object.assign(dataStore.condIds, result);
+      });
       dialogOpen.value = false;
       reset();
     } else {

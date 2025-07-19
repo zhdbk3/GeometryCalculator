@@ -30,6 +30,8 @@
         <ShowConds />
       </div>
     </div>
+    <hr />
+    <DelObj />
   </q-page>
 </template>
 
@@ -40,6 +42,7 @@ import AddPoint from 'components/add/AddPoint.vue';
 import ShowPoints from 'components/add/ShowPoints.vue';
 import AddCondsAll from 'components/add/AddCondsAll.vue';
 import ShowConds from 'components/add/ShowConds.vue';
+import DelObj from 'components/add/DelObj.vue';
 </script>
 
 <style scoped>

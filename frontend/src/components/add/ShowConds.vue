@@ -28,14 +28,11 @@ const latexArray = ref<Array<LatexItem>>([]);
 
 const dataStore = useDataStore();
 
-watch(
-  () => dataStore.condsCounter,
-  () => {
-    void window.pywebview.api.problem.get_conds_latex().then((result) => {
-      latexArray.value = result;
-    });
-  },
-);
+watch(dataStore.condIds, () => {
+  void window.pywebview.api.problem.get_conds_latex().then((result) => {
+    latexArray.value = result;
+  });
+});
 </script>
 
 <style scoped>

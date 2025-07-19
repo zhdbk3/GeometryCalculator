@@ -1,5 +1,7 @@
 <template>
-  <q-btn @click="dialogOpen = true" :label="btnLabel" v-katex class="full-width"></q-btn>
+  <q-btn @click="dialogOpen = true" v-katex class="full-width">
+    $ {{ relOp }} $ 添加{{ condType }}
+  </q-btn>
   <q-dialog v-model="dialogOpen" persistent>
     <q-card>
       <q-form @reset="reset" @submit="submit">
@@ -8,7 +10,7 @@
           <div class="container">
             <div v-if="triangle" v-katex>$ \triangle $</div>
             <q-input v-model="input1" dense />
-            <label v-katex v-html="wrappedRelOpLaTeX"></label>
+            <label v-katex>$ {{ relOp }} $</label>
             <div v-if="triangle" v-katex>$ \triangle $</div>
             <q-input v-model="input2" dense />
           </div>
@@ -45,9 +47,6 @@ const {
 
 const dialogOpen = ref(false);
 
-const wrappedRelOpLaTeX = computed(() => `$ ${relOp} $`);
-const btnLabel = computed(() => `${wrappedRelOpLaTeX.value} 添加${condType}`);
-
 const input1 = ref('');
 const input2 = ref('');
 
@@ -62,7 +61,9 @@ const dataStore = useDataStore();
 function submit() {
   void submitFunc(input1.value, input2.value).then(([successful, msg]) => {
     if (successful) {
-      dataStore.condsCounter++;
+      void window.pywebview.api.problem.get_cond_ids().then((result) => {
+        Object.assign(dataStore.condIds, result);
+      });
       dialogOpen.value = false;
       reset();
     } else {

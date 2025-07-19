@@ -30,6 +30,7 @@ import { ionAddOutline } from '@quasar/extras/ionicons-v8';
 import { ref, computed } from 'vue';
 import { isValidNewSymbolName } from './validityCheck';
 import { useDataStore } from 'stores/data';
+import { wrapBlock } from 'components/add/wrapLatex';
 
 const dialogOpen = ref(false);
 
@@ -54,7 +55,7 @@ const isValid = computed(
 const previewLatex = computed(() => {
   // 若不合法，输出空格占位
   if (!isValid.value) {
-    return '$$ ~ $$';
+    return wrapBlock('~');
   }
   // 若为希腊字母，在前面补上 \
   let nameLatex = name.value;
@@ -72,7 +73,7 @@ const previewLatex = computed(() => {
   };
   const key = `${+negative.value}${+zero.value}${+positive.value}`;
   const domain = domainMap[key];
-  return String.raw`$$ ${nameLatex} \in ${domain} $$`;
+  return wrapBlock(String.raw`${nameLatex} \in ${domain}`);
 });
 
 /**
@@ -89,7 +90,7 @@ const dataStore = useDataStore();
  * 将表单提交给后端
  */
 function submit() {
-  window.pywebview.api.problem.add_symbol(name.value, {
+  void window.pywebview.api.problem.add_symbol(name.value, {
     negative: negative.value,
     zero: zero.value,
     positive: positive.value,

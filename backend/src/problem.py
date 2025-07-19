@@ -6,6 +6,7 @@ from typing import Never, Optional, Callable
 import re
 import functools
 from abc import ABC, abstractmethod
+from collections import deque
 
 from sympy import Symbol, Expr, simplify, Eq, Line2D, solve, Segment, Point2D, Matrix, acos, sympify
 from sympy import sqrt, sin, cos, tan, pi  # noqa
@@ -218,10 +219,10 @@ class Problem:
                     required_by_new_symbols.add(f'x_{name}')
                 else:
                     eqs.append(Eq(x, self._eval_str_expr(x_str)))
-                    required_by_new_symbols.add('x')
             if y_str != '':
                 if y_str == 'y':
                     eqs.append(Eq(y, self._get_sp_symbol(f'y_{name}')))
+                    required_by_new_symbols.add(f'y_{name}')
                 else:
                     eqs.append(Eq(y, self._eval_str_expr(y_str)))
 
@@ -348,6 +349,9 @@ class Problem:
     def get_point_names(self) -> list[str]:
         return self.point_names
 
+    def get_cond_ids(self) -> list[str]:
+        return self.cond_ids
+
     def get_symbols_latex(self) -> list[LatexItem]:
         """
         获取需要在前端页面上展示的符号的 LaTeX，包含取值范围（含始末 $ $）
@@ -396,3 +400,36 @@ class Problem:
                 'latex': cond.get_eqs_latex()
             })
         return result
+
+    def get_deeply_required_by(self, identifier: str) -> list[str]:
+        """
+        查询一个对象被哪些对象依赖（包括其后代的依赖）
+        :param identifier: 需要查询的对象的 ``id``
+        :return: 一个列表（实际上是一个集合），所有被依赖的对象的 ``id``
+        """
+        # BFS
+        result = set()
+        visited = {identifier}
+        queue = deque([identifier])
+
+        while len(queue) > 0:
+            current_id = queue.popleft()
+            for i in self.math_objs[current_id].required_by:
+                if i not in visited:
+                    result.add(i)
+                    visited.add(i)
+                    queue.append(i)
+
+        return list(result)
+
+    def del_objs(self, ids: list[str]) -> None:
+        for i in ids:
+            # 删除对象
+            del self.math_objs[i]
+            # 列表除名
+            for l in [self.symbol_names, self.point_names, self.cond_ids]:
+                if i in l:
+                    l.remove(i)
+        # 删除依赖关系
+        for obj in self.math_objs.values():
+            obj.required_by -= set(ids)
