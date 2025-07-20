@@ -12,7 +12,7 @@ title="我是笨蛋 qwq">（应该没有哪道题需要用到超过 26 个点吧
 
 # 表达式
 
-我们的表达式解析器基于 `Python` 的 `eval`<span class="heimu"
+我们的表达式解析器基于 Python 的 `eval`<span class="heimu"
 title="你吃得太饱了">（所以你可以注入任意代码攻击后端）</span>，并增加了一些自己的设计。
 
 ## 运算
