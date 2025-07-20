@@ -1,0 +1,102 @@
+name: 打包（安卓）
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 版本号
+        required: true
+      mode:
+        description: Buildozer 构建模式（debug 或 release）
+        required: true
+        default: release
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 检出仓库
+        uses: actions/checkout@v4
+
+      - name: 设置 pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: 设置 Node.js 环境
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          # cache: pnpm
+
+      - name: 构建前端
+        working-directory: frontend
+        run: |
+          pnpm install -g @quasar/cli
+          pnpm install
+          quasar build
+
+      - name: 设置 Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12' # Version range or exact version of a Python version to use, using SemVer's version range syntax
+          architecture: 'x64' # optional x64 or x86. Defaults to x64 if not specified
+          cache: 'pip'
+          cache-dependency-path: |
+            **/requirements*.txt
+
+      - name: 安装 Python 依赖
+        working-directory: backend
+        run: |
+          pip install -r requirements.txt
+
+      # https://github.com/kivy/python-for-android/issues/2303#issuecomment-689928162
+      # 因此，在 buildozer.spec 中的 requirements 应去掉 sympy
+      - name: 复制 sympy 和 pywebview-android.jar
+        run: |
+          cp -r /opt/hostedtoolcache/Python/3.12.11/x64/lib/python3.12/site-packages/sympy/ backend/src/
+          cp /opt/hostedtoolcache/Python/3.12.11/x64/lib/python3.12/site-packages/webview/lib/pywebview-android.jar backend/pywebview-android.jar
+
+      - name: 构建可执行文件
+        uses: ArtemSBulgakov/buildozer-action@v1
+        id: buildozer
+        with:
+          command: buildozer android ${{ github.event.inputs.mode }}
+          workdir: backend
+
+      - name: 修复权限
+        run: |
+          sudo chown -R $USER:$USER backend/bin
+          sudo chmod -R 755 backend/bin
+
+      # https://github.com/r0adkll/sign-android-release/issues/84#issuecomment-1889636075
+      - name: 设置构建工具版本环境变量
+        shell: bash
+        run: |
+          BUILD_TOOL_VERSION=$(ls /usr/local/lib/android/sdk/build-tools/ | tail -n 1)
+          echo "BUILD_TOOL_VERSION=$BUILD_TOOL_VERSION" >> $GITHUB_ENV
+          echo Last build tool version is: $BUILD_TOOL_VERSION
+
+      - name: 给 APK 签名
+        uses: r0adkll/sign-android-release@v1
+        id: sign_apk
+        with:
+          releaseDirectory: backend/bin
+          signingKeyBase64: ${{ secrets.SIGNING_KEY_BASE64 }}
+          alias: ${{ secrets.ALIAS }}
+          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
+        env:
+          BUILD_TOOLS_VERSION: ${{ env.BUILD_TOOL_VERSION }}
+
+      - name: 复制 LICENSE
+        run: |
+          cp LICENSE backend/bin/LICENSE
+
+      - name: 上传成果
+        uses: actions/upload-artifact@v4
+        with:
+          name: GeometryCalculator-v${{ github.event.inputs.version }}-Android
+          path: |
+            ${{ steps.sign_apk.outputs.signedReleaseFile }}
+            backend/bin/LICENSE

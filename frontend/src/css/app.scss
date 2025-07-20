@@ -20,7 +20,7 @@ body {
 }
 
 .katex {
-  font-size: 24px;
+  font-size: 1.5rem;
 }
 
 // 恢复 h1-h6 默认字体属性
@@ -81,9 +81,10 @@ h6 {
   border: 1px solid rgba(0, 0, 0, 0.073);
   border-bottom: 1px solid rgba(0, 0, 0, 0.183);
   border-radius: 5px;
-  padding: 5px 12px 6px 12px !important;
+  padding: 0.375rem 0.75rem !important;
   outline: none;
   margin: 2px;
+  font-size: 0.875rem;
 }
 
 .q-btn:hover {
@@ -173,4 +174,9 @@ input:focus {
 // 对话框
 .q-card {
   border-radius: 10px !important;
+}
+
+label,
+.q-checkbox {
+  text-wrap: nowrap;
 }

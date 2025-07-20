@@ -11,9 +11,11 @@
           id="menu-btn"
         />
 
-        <q-toolbar-title v-katex>几何计算器 $\textit{Geometry Calculator}$</q-toolbar-title>
+        <q-toolbar-title
+          >几何计算器 <span v-katex v-if="Screen.width > 500">$\textit{Geometry Calculator}$</span>
+        </q-toolbar-title>
 
-        <div v-katex>$ v2.0.0 $</div>
+        <div v-katex id="version">$ v2.0.0 $</div>
       </q-toolbar>
     </q-header>
 
@@ -53,6 +55,7 @@ import {
   ionInformationCircleOutline,
 } from '@quasar/extras/ionicons-v8';
 import NavItem, { type NavItemProps } from 'components/NavItem.vue';
+import { Screen } from 'quasar';
 
 const navItemPropsArray: Array<NavItemProps> = [
   {
@@ -141,6 +144,10 @@ function setMobile(state: boolean) {
 
 .q-toolbar {
   padding-left: 8px;
+}
+
+.q-toolbar__title {
+  font-size: 1.25em;
 }
 </style>
 

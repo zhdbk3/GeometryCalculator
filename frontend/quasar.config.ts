@@ -11,7 +11,7 @@ export default defineConfig((/* ctx */) => {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
     // https://v2.quasar.dev/quasar-cli-vite/boot-files
-    boot: ['katex'],
+    boot: ['katex', 'setRem'],
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#css
     css: ['app.scss'],
@@ -59,7 +59,7 @@ export default defineConfig((/* ctx */) => {
       // ignorePublicFolder: true,
       // minify: false,
       // polyfillModulePreload: true,
-      // distDir
+      distDir: '../backend/src/ui',
 
       // extendViteConf (viteConf) {},
       // viteVuePluginOptions: {},

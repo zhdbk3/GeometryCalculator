@@ -64,4 +64,16 @@ import File from 'components/add/File.vue';
   width: 0;
   min-width: 350px;
 }
+
+@media (max-width: 350px) {
+  .add {
+    width: 100%;
+    margin-right: 0;
+  }
+
+  .show {
+    min-width: 0;
+    width: 100%;
+  }
+}
 </style>

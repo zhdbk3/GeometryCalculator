@@ -8,6 +8,5 @@ class API:
 
 
 api = API()
-window = webview.create_window('几何计算器', 'http://localhost:9000', js_api=api,
-                               maximized=True, min_size=(800, 600))
+window = webview.create_window('几何计算器', 'http://localhost:9000', js_api=api, maximized=True)
 webview.start(debug=True)
