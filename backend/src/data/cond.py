@@ -14,7 +14,7 @@ def to_raw_latex(expr: str) -> str:
     """
     expr = mark_vec_coord(expr)
 
-    # TODO: 支持向量点乘
+    # TODO: 支持向量点乘、角度制
     expr = latex(sympify(expr))
 
     rules = [

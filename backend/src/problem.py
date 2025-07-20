@@ -152,6 +152,8 @@ class Problem:
         """
         expr = mark_vec_coord(expr)
         rules = [
+            # 角度制
+            ('deg', '* pi / 180'),
             # dot -> @ dot @
             ('dot', '@ dot @'),
             # 处理未知数（不考虑排除 x, y 了，反正最后会报错）

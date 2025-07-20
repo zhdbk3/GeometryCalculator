@@ -3,7 +3,7 @@
 ## TODO
 
 - [ ] 给软件设计一个图标
-- [ ] 使[条件的原始形式解析器](backend/src/data/cond.py)支持向量点乘
+- [ ] 使[条件的原始形式解析器](backend/src/data/cond.py)支持向量点乘、角度制
 
 ## 在开发模式下运行项目
 
