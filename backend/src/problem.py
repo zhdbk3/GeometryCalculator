@@ -10,7 +10,7 @@ from collections import deque
 import pickle
 
 from sympy import Symbol, Expr, simplify, Eq, Line2D, solve, Segment, Point2D, Matrix, acos, latex
-from sympy import sqrt, sin, cos, tan, pi  # noqa
+from sympy import sqrt, sin, cos, tan, pi, Integer  # noqa
 from sympy.logic.boolalg import BooleanTrue, BooleanFalse
 from webview import windows, SAVE_DIALOG, OPEN_DIALOG
 
@@ -154,17 +154,19 @@ class Problem:
         rules = [
             # 角度制
             ('deg', '* pi / 180'),
-            # dot -> @ dot @
+            # 给整数套上 ``Integer()``，防止一除变成小数
+            (r'(?<!\.)\b(\d+)\b(?!\.)', r'Integer(\1)'),
+            # 向量点乘
             ('dot', '@ dot @'),
-            # 处理未知数（不考虑排除 x, y 了，反正最后会报错）
+            # 未知数（不考虑排除 x, y 了，反正最后会报错）
             (r'\b([a-z]|' + '|'.join(VALID_GREEK_SPELLINGS) + r')\b', r"self._get_sp_symbol('\1')"),
-            # 处理访问点坐标
+            # 访问点坐标
             (r'\b(x|y)_([A-Z])\b', r"self._get_\1_of('\2')"),
-            # 处理线段长度
+            # 线段长度
             (r'\b([A-Z]{2})\b', r"self._get_distance('\1')"),
-            # 处理角度
+            # 角度
             (r'\bang([A-Z]{3})\b', r"self._get_angle('\1')"),  # bang! 我这奇妙的笑点 233
-            # 处理两个大写字母的向量
+            # 两个大写字母的向量
             (r'\bvec([A-Z]{2})\b', r"self._get_vec('\1')")
         ]
         for pattern, repl in rules:
