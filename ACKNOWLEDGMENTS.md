@@ -15,15 +15,14 @@
 
 ## 前端
 
-|                                     项目                                     |                                                                            许可证                                                                             |      简介 / 用途       |
-|:--------------------------------------------------------------------------:|:----------------------------------------------------------------------------------------------------------------------------------------------------------:|:------------------:|
-|                      [Vue.js](https://cn.vuejs.org/)                       |                                                   [MIT](https://github.com/vuejs/core/blob/main/LICENSE)                                                   |        前端框架        |
-|                       [Quasar](https://quasar.dev/)                        |                                             [MIT](https://github.com/quasarframework/quasar/blob/dev/LICENSE)                                              |    基于 Vue 的前端框架    |
-|                        [KaTeX](https://katex.org/)                         |                                                  [MIT](https://github.com/KaTeX/KaTeX/blob/main/LICENSE)                                                   |       渲染数学公式       |
-|         [markdown-it](https://github.com/markdown-it/markdown-it)          |                                           [MIT](https://github.com/markdown-it/markdown-it/blob/master/LICENSE)                                            |    渲染 Markdown     |
-| [github-markdown-css](https://github.com/sindresorhus/github-markdown-css) |                                        [MIT](https://github.com/sindresorhus/github-markdown-css/blob/main/license)                                        | GitHub Markdown 样式 |
-|   [萌娘百科界面代码](https://zh.moegirl.org.cn/MediaWiki:Gadget-site-styles.css)   | [CC BY-NC-SA 3.0](https://github.com/MoegirlPediaInterfaceAdmins/MoegirlPediaInterfaceCodes/blob/master/src/gadgets/site-styles/Gadget-site-styles.css#L5) |       文档中黑幕        |
-|              [QFluentWidgets](https://qfluentwidgets.com/zh/)              |                                       [GPL-3.0](https://github.com/zhiyiYo/PyQt-Fluent-Widgets/blob/master/LICENSE)                                        |     参考 UI 样式设计     |
+|                                     项目                                     |                                      许可证                                      |      简介 / 用途       |
+|:--------------------------------------------------------------------------:|:-----------------------------------------------------------------------------:|:------------------:|
+|                      [Vue.js](https://cn.vuejs.org/)                       |            [MIT](https://github.com/vuejs/core/blob/main/LICENSE)             |        前端框架        |
+|                       [Quasar](https://quasar.dev/)                        |       [MIT](https://github.com/quasarframework/quasar/blob/dev/LICENSE)       |    基于 Vue 的前端框架    |
+|                        [KaTeX](https://katex.org/)                         |            [MIT](https://github.com/KaTeX/KaTeX/blob/main/LICENSE)            |       渲染数学公式       |
+|         [markdown-it](https://github.com/markdown-it/markdown-it)          |     [MIT](https://github.com/markdown-it/markdown-it/blob/master/LICENSE)     |    渲染 Markdown     |
+| [github-markdown-css](https://github.com/sindresorhus/github-markdown-css) | [MIT](https://github.com/sindresorhus/github-markdown-css/blob/main/license)  | GitHub Markdown 样式 |
+|              [QFluentWidgets](https://qfluentwidgets.com/zh/)              | [GPL-3.0](https://github.com/zhiyiYo/PyQt-Fluent-Widgets/blob/master/LICENSE) |     参考 UI 样式设计     |
 
 ## 后端
 
