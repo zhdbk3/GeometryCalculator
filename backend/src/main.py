@@ -2,7 +2,7 @@ import webview
 
 from problem import Problem
 
-__version__ = '2.0.0'
+__version__ = '2.0.1'
 
 
 class API:

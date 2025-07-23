@@ -1,6 +1,6 @@
 {
   "name": "geometry-calculator-frontend",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "几何计算器的前端，将由 pywebview 运行并与 Python 后端通信。",
   "productName": "几何计算器 前端",
   "author": "zhdbk3 (https://space.bilibili.com/551409211)",

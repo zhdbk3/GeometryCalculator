@@ -152,6 +152,7 @@ class Problem:
         """
         expr = mark_vec_coord(expr)
         rules = [
+            # 幂运算符
             (r'\^', '**'),
             # 角度制
             ('deg', '* pi / 180'),
