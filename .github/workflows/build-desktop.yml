@@ -6,6 +6,10 @@ on:
       version:
         description: 版本号
         required: true
+      windows-console-mode:
+        description: Nuitka-Action 的 windows-console-mode 参数值（disable 无控制台 / force 有控制台）
+        required: true
+        default: disable
 
 jobs:
   build:
@@ -69,7 +73,7 @@ jobs:
           file-version: ${{ github.event.inputs.version }}
           macos-app-version: ${{ github.event.inputs.version }}
           copyright: 'Copyright (C) 2025 着火的冰块nya'
-          windows-console-mode: disable
+          windows-console-mode: ${{ github.event.inputs.windows-console-mode }}
           disable-plugins: options-nanny
           mingw64: true
 
