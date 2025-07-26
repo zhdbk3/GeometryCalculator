@@ -58,7 +58,9 @@ def to_raw_latex(expr: str) -> str:
         # angABC -> ∠ABC
         (r'\bang([A-Z]{3})\b', r'\\angle \1'),
         # 删除多余点号
-        (r'(?<=[0-9a-z])\s*\\cdot\s*(?=[a-zA-Z]|\\overrightarrow)', r'')
+        (r'(?<=[0-9a-z])\s*\\cdot\s*(?=[a-zA-Z]|\\overrightarrow)', r' '),
+        # StABC -> S△ABC
+        (r'\bSt([A-Z]{3})\b', r'S_{\\triangle \1}')
     ]
     for pattern, repl in rules:
         expr = re.sub(pattern, repl, expr)

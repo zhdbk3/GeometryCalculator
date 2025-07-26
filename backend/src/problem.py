@@ -9,7 +9,7 @@ from abc import ABC, abstractmethod
 from collections import deque
 import pickle
 
-from sympy import Symbol, Expr, simplify, Eq, Line2D, solve, Segment, Point2D, Matrix, acos, latex
+from sympy import Symbol, Expr, simplify, Eq, Line2D, solve, Segment, Point2D, Matrix, acos, latex,Abs
 from sympy import sqrt, sin, cos, tan, pi, Integer  # noqa
 from sympy.logic.boolalg import BooleanTrue, BooleanFalse
 from webview import windows, SAVE_DIALOG, OPEN_DIALOG
@@ -145,6 +145,12 @@ class Problem:
         v2 = self._get_vec(name[1:])
         return acos(v1.dot(v2) / (v1.norm() * v2.norm()))
 
+    def _get_triangle_area(self, name: str) -> Expr:
+        x1, y1 = self._get_sp_point(name[0]).coordinates
+        x2, y2 = self._get_sp_point(name[1]).coordinates
+        x3, y3 = self._get_sp_point(name[2]).coordinates
+        return Abs(x1 * (y2 - y3) + x2 * (y3 - y1) + x3 * (y1 - y2)) / 2
+
     def _eval_str_expr(self, expr: str) -> Expr | Never:
         """
         尝试解析字符串表达式，解析失败会报错
@@ -169,7 +175,9 @@ class Problem:
             # 角度
             (r'\bang([A-Z]{3})\b', r"self._get_angle('\1')"),  # bang! 我这奇妙的笑点 233
             # 两个大写字母的向量
-            (r'\bvec([A-Z]{2})\b', r"self._get_vec('\1')")
+            (r'\bvec([A-Z]{2})\b', r"self._get_vec('\1')"),
+            # 三角形面积
+            (r'\bSt([A-Z]{3})\b', r"self._get_triangle_area('\1')")
         ]
         for pattern, repl in rules:
             expr = re.sub(pattern, repl, expr)
