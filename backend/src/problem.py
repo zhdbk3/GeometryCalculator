@@ -169,7 +169,7 @@ class Problem:
             # 未知数（不考虑排除 x, y 了，反正最后会报错）
             (r'\b([a-z]|' + '|'.join(VALID_GREEK_SPELLINGS) + r')\b', r"self._get_sp_symbol('\1')"),
             # 访问点坐标
-            (r'\b(x|y)_([A-Z])\b', r"self._get_\1_of('\2')"),
+            (r'\b(x|y)([A-Z])\b', r"self._get_\1_of('\2')"),
             # 线段长度
             (r'\b([A-Z]{2})\b', r"self._get_distance('\1')"),
             # 角度
