@@ -57,6 +57,10 @@ declare global {
 
           solve: (expr: string) => Promise<Array<string>>;
         };
+        logger: {
+          warning: (msg) => Promise<void>;
+          error: (msg) => Promise<void>;
+        };
       };
     };
   }
