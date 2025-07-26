@@ -62,7 +62,9 @@ def to_raw_latex(expr: str) -> str:
         # StABC -> S△ABC
         (r'\bSt([A-Z]{3})\b', r'S_{\\triangle \1}'),
         # xA -> x_A
-        (r'\b(x|y)([A-Z])\b', r'\1_\2')
+        (r'\b(x|y)([A-Z])\b', r'\1_\2'),
+        # kAB -> k_{AB}
+        (r'\b(k|b)([A-Z]{2})\b', r'\1_{\2}')
     ]
     for pattern, repl in rules:
         expr = re.sub(pattern, repl, expr)
