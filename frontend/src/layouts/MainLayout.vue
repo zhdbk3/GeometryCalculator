@@ -15,7 +15,7 @@
           >几何计算器 <span v-katex v-if="Screen.width > 500">$\textit{Geometry Calculator}$</span>
         </q-toolbar-title>
 
-        <div v-katex id="version">$ v2.0.1 $</div>
+        <div v-katex id="version">$ v2.1.0 $</div>
       </q-toolbar>
     </q-header>
 
