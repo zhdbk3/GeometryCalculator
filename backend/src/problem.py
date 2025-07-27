@@ -172,7 +172,7 @@ class Problem:
         """
         x0, y0 = self._get_sp_point(point).coordinates
         a, b, c = self._get_line(line).coefficients
-        return (a * x0 + b * y0 + c) / sqrt(a ** 2 + b ** 2)
+        return Abs(a * x0 + b * y0 + c) / sqrt(a ** 2 + b ** 2)
 
     def _eval_str_expr(self, expr: str) -> Expr | Never:
         """
