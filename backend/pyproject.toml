@@ -2,7 +2,7 @@
 name = "geometry-calculator-backend"
 version = "2.1.0"
 description = "几何计算器 后端"
-#readme = "README.md"
+#readme = "README.en.md"
 requires-python = ">=3.12"
 dependencies = [
     "pywebview==5.4",

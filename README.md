@@ -3,6 +3,11 @@
 
 # 几何计算器 2
 
+## 其它语言
+
+* [English (US)](README.en.md)
+* [简体中文](README.md)
+
 借助计算机的强大算力，使用解析几何暴力计算几何问题！
 
 - [使用文档](frontend/src/pages/docs.md)

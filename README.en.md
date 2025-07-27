@@ -1,13 +1,13 @@
 > Yeah, you're absolutely right - we're all just 8th graders using pure geometric methods, and you're in 9th grade, already learning coordinate geometry.
 How could our method possibly be faster than just setting up a coordinate system??? 😅
-> <p align="right"> - One of our middle school math teacher</p>
+> <p align="right"> - One of our middle school math teachers</p>
 
 # Geometry Calculator
 
 ## Other Languages
 
-* [English (US)](README.md)
-* [Chinese (China Mainland)](README.zh.md)
+* [English (US)](README.en.md)
+* [简体中文](README.md)
 
 Take advantage of your PC’s raw horsepower—brute‑force your geometry problems with analytic geometry!
 
