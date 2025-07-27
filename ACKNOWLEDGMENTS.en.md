@@ -1,3 +1,11 @@
+# Acknowledgments to Geometry Calculator ver. 2 Contributors
+
+<a href="https://github.com/zhdbk3/GeometryCalculator/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=zhdbk3/GeometryCalculator" />
+</a>
+
+Made with [contrib.rocks](https://contrib.rocks).
+
 # Acknowledgments to Geometry Calculator ver. 1 Contributors
 
 - GitHub Repository：https://github.com/YuzhenQin/GeometryCalculator

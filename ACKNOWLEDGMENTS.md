@@ -16,7 +16,6 @@ Made with [contrib.rocks](https://contrib.rocks).
 |    ElectroUnity    | [哔哩哔哩](https://space.bilibili.com/562633104) | [GitHub](https://github.com/ElectroUnity) |
 | 薛定谔的按钮 (DingerBtn) | [哔哩哔哩](https://space.bilibili.com/668182235) |  [GitHub](https://github.com/DingerBtn)   |
 |      GreshAnt      |                      -                       | [GitHub](https://github.com/Kevin-O-Hsu)  |
-|  食人花603 (Athmyx)   | [BiliBili](https://space.bilibili.com/552304031) |    [GitHub](https://github.com/SRH603)    |
 
 ## 其它语言
 
