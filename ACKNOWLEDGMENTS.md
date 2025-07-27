@@ -8,12 +8,18 @@
 |    ElectroUnity    | [哔哩哔哩](https://space.bilibili.com/562633104) | [GitHub](https://github.com/ElectroUnity) |
 | 薛定谔的按钮 (DingerBtn) | [哔哩哔哩](https://space.bilibili.com/668182235) |  [GitHub](https://github.com/DingerBtn)   |
 |      GreshAnt      |                      -                       | [GitHub](https://github.com/Kevin-O-Hsu)  |
+|  食人花603 (Athmyx)   | [BiliBili](https://space.bilibili.com/552304031) |    [GitHub](https://github.com/SRH603)    |
 
-# 感谢开源项目
+## 其它语言
+
+* [English (US)](ACKNOWLEDGMENTS.en.md)
+* [简体中文](ACKNOWLEDGMENTS.md)
+
+## 感谢开源项目
 
 本项目使用或参考了以下开源项目，遵循它们的开源协议，并在此致以由衷的感谢：
 
-## 前端
+### 前端
 
 |                                     项目                                     |                                      许可证                                      |      简介 / 用途       |
 |:--------------------------------------------------------------------------:|:-----------------------------------------------------------------------------:|:------------------:|
@@ -24,7 +30,7 @@
 | [github-markdown-css](https://github.com/sindresorhus/github-markdown-css) | [MIT](https://github.com/sindresorhus/github-markdown-css/blob/main/license)  | GitHub Markdown 样式 |
 |              [QFluentWidgets](https://qfluentwidgets.com/zh/)              | [GPL-3.0](https://github.com/zhiyiYo/PyQt-Fluent-Widgets/blob/master/LICENSE) |     参考 UI 样式设计     |
 
-## 后端
+### 后端
 
 |                      项目                      |                                  许可证                                   |     简介 / 用途      |
 |:--------------------------------------------:|:----------------------------------------------------------------------:|:----------------:|

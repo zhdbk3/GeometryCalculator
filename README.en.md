@@ -11,8 +11,8 @@ How could our method possibly be faster than just setting up a coordinate system
 
 Take advantage of your PC’s raw horsepower—brute‑force your geometry problems with analytic geometry!
 
-* [User Guide](frontend/src/pages/docs.md)
-* [About Geometry Calculator Ver 2](frontend/src/pages/about.md)
+* [User Guide](frontend/src/pages/docs.en.md)
+* [About Geometry Calculator Ver 2](frontend/src/pages/about.en.md)
 
 ## What’s New
 
@@ -35,7 +35,7 @@ Take advantage of your PC’s raw horsepower—brute‑force your geometry probl
 
 ## Acknowledgments
 
-See [`ACKNOWLEDGMENTS.md`](ACKNOWLEDGMENTS.md)
+See [`ACKNOWLEDGMENTS.en.md`](ACKNOWLEDGMENTS.en.md)
 
 ## TODO
 
