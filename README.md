@@ -1,82 +1,78 @@
-> Yeah, you're absolutely right - we're all just 8th graders using pure geometric methods, and you're in 9th grade, already learning coordinate geometry.
-How could our method possibly be faster than just setting up a coordinate system??? 😅
-> <p align="right"> - One of our middle school math teachers</p>
+> 啊对对对，我们都是初二的学生，用几何的方法做；你是初三的学生，用建系的高级方法做。我们的方法哪有建系快啊 😅
+> <p align="right">——我们初中一位数学老师</p>
 
-# Geometry Calculator
+# 几何计算器 2
 
-## Other Languages
+## 其它语言
 
-* [English (US)](README.md)
-* [简体中文](README.zh.md)
+* [English (US)](README.en.md)
+* [简体中文](README.md)
 
-Take advantage of your PC’s raw horsepower—brute‑force your geometry problems with analytic geometry!
+借助计算机的强大算力，使用解析几何暴力计算几何问题！
 
-* [User Guide](frontend/src/pages/docs.md)
-* [About Geometry Calculator Ver 2](frontend/src/pages/about.md)
+- [使用文档](frontend/src/pages/docs.md)
+- [关于 几何计算器 2](frontend/src/pages/about.md)
 
-## What’s New
+## 新版本特点
 
-* ✨ **Sleeker UI** - Full LaTeX support, friendly to humans ~~and cat-girls~~
-* ⚡ **Snappy Performance** - Front-end and back‑end are completely seperated, so the lag from the old version is gone
-* 💪 **More Powerful features!!**
+- ✨ 页面美观：全面支持 LaTeX，对人类~~和猫娘~~友好
+- ⚡ 运行流畅：前后端分离，告别旧版本中的卡顿
+- 💪 功能强大：
+    - 🔢 支持添加未知数并限定取值范围
+    - 📍 添加点的逻辑更加合理、人性化
+    - 📈 表达式解析全面升级：
+        - 👍 更加人性化的语法，告别特殊字符
+        - ➡️ 支持向量运算
+        - 📄 条件可以显示原始形式（也会用 LaTeX 排得美观），管理更方便
+    - 📐 直线平行、垂直
+    - 🔺 快速添加复合条件：三角形全等、相似
+    - 🧩 快速添加特殊图形：平行四边形、菱形、矩形、正方形、等边三角形
+    - 🗑️ 更易于操作的删除条件
+    - 💾 可以把数据保存到文件、从文件加载数据
 
-  * 🔢 Add unknowns and restrict their value ranges
-  * 📍 Smarter, more intuitive point‑adding workflow
-  * 📈 Major expression‑parser overhaul
+## 致谢
 
-    * 👍 Human‑friendly syntax—no more weird symbols
-    * ➡️ Vector operations supported
-    * 📄 Conditions can be shown in their original form (rendered with LaTeX), making them easier to manage
-  * 📐 Lines: quick parallel / perpendicular tools
-  * 🔺 Fast composite constraints: triangle congruence & similarity
-  * 🧩 One‑click special shapes: parallelogram, rhombus, rectangle, square, equilateral triangle
-  * 🗑️ Cleaner condition deletion
-  * 💾 Save data to file & load it back later
-
-## Acknowledgments
-
-See [`ACKNOWLEDGMENTS.md`](ACKNOWLEDGMENTS.md)
+见 [ACKNOWLEDGMENTS.md](ACKNOWLEDGMENTS.md)
 
 ## TODO
 
-* [ ] Design an app icon
-* [ ] Package for APK distribution
+- [ ] 给软件设计一个图标
+- [ ] 打包为 APK
 
-## Running the Project in Development Environment
+## 在开发模式下运行项目
 
-### 1. Install Dependencies
+### 1. 安装依赖
 
-In `frontend/`:
+在 `frontend/` 目录下执行：
 
 ```bash
 pnpm install
 ```
 
-In `backend/`:
+在 `backend/` 目录下执行：
 
 ```bash
 uv sync
 ```
 
-or
+或
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 2. Start the Front End
+### 2. 启动前端
 
-In `frontend/`:
+在 `frontend/` 目录下执行：
 
 ```bash
 quasar dev
 ```
 
-You See the browser tab that just popped up, don't you? Yup, it’s useless lol. Close it.
+看到刚刚打开的浏览器页面了吗？对，这个没有用，把它叉掉。
 
-The front end supports hot-reload, so every change appears instantly without a restart.
+前端可以热更新，你修改代码之后会立即得到反馈，无需重启前端。
 
-### 3. Start the Back End
+### 3. 启动后端
 
-In `backend/`, run `main_dev.py`. That’s it - the whole stack is up and running!! 
-
+在 `backend/` 目录下运行 `main_dev.py`，这样整个项目就启动完成了。
