@@ -5,7 +5,8 @@ import sys
 
 os.makedirs('log', exist_ok=True)
 
-filename = f'log/log_{datetime.datetime.now().strftime('%Y-%m-%d_%H.%M.%S')}.txt'
+filename = f'log/log_{datetime.datetime.now().strftime("%Y-%m-%d_%H.%M.%S")}.txt'
+
 logging.basicConfig(
     level=logging.DEBUG,
     format='[%(asctime)s %(levelname)s %(name)s] %(message)s',
