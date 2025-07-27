@@ -9,7 +9,7 @@ from abc import ABC, abstractmethod
 from collections import deque
 import pickle
 
-from sympy import Symbol, Expr, simplify, Eq, Line2D, solve, Segment, Point2D, Matrix, acos, latex, Abs, oo
+from sympy import Symbol, Expr, simplify, Eq, Line2D, solve, Segment, Point2D, Matrix, acos, latex, Abs, sqrtdenest
 from sympy import sqrt, sin, cos, tan, pi, Integer  # noqa
 from sympy.logic.boolalg import BooleanTrue, BooleanFalse
 from webview import windows, SAVE_DIALOG, OPEN_DIALOG
@@ -462,6 +462,7 @@ class Problem:
         symbols = [target] + [self.math_objs[i].sp_symbol for i in self.symbol_names]  # type: ignore
         solutions = solve(eqs, symbols, dict=True)
 
-        result = set(s[target] for s in solutions)
+        # 关于 ``sqrtdenest``：https://github.com/zhdbk3/GeometryCalculator/issues/5
+        result = set(simplify(sqrtdenest(s[target])) for s in solutions)
         result = [f'{left} = {latex(i)}' for i in result]
         return result
