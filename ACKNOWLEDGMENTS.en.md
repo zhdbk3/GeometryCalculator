@@ -16,7 +16,6 @@ Made with [contrib.rocks](https://contrib.rocks).
 |  ElectroUnity   | [BiliBili](https://space.bilibili.com/562633104) | [GitHub](https://github.com/ElectroUnity) |
 |    DingerBtn    | [BiliBili](https://space.bilibili.com/668182235) |  [GitHub](https://github.com/DingerBtn)   |
 |    GreshAnt     |                        -                         | [GitHub](https://github.com/Kevin-O-Hsu)  |
-| Athmyx / SRH603 | [BiliBili](https://space.bilibili.com/552304031) |    [GitHub](https://github.com/SRH603)    |
 
 ## Other Languages
 
