@@ -49,7 +49,7 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [
-    { name = "pywebview", specifier = ">=5.4" },
+    { name = "pywebview", specifier = "==5.4" },
     { name = "sympy", specifier = ">=1.14.0" },
 ]
 
