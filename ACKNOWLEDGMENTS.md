@@ -1,3 +1,11 @@
+# 感谢几何计算器 2 的贡献者
+
+<a href="https://github.com/zhdbk3/GeometryCalculator/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=zhdbk3/GeometryCalculator" />
+</a>
+
+Made with [contrib.rocks](https://contrib.rocks).
+
 # 感谢几何计算器 1 的贡献者
 
 - GitHub 仓库：https://github.com/YuzhenQin/GeometryCalculator
