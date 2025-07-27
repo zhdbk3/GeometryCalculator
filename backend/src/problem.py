@@ -165,6 +165,15 @@ class Problem:
             raise ValueError(f'直线 {name} 竖直，无法获取截距！')
         return -c / b
 
+    def _get_distance_from_point_to_line(self, point: str, line: str) -> Expr:
+        """
+        点到直线的距离
+        https://github.com/zhdbk3/GeometryCalculator/issues/6#issuecomment-3124395226
+        """
+        x0, y0 = self._get_sp_point(point).coordinates
+        a, b, c = self._get_line(line).coefficients
+        return (a * x0 + b * y0 + c) / sqrt(a ** 2 + b ** 2)
+
     def _eval_str_expr(self, expr: str) -> Expr | Never:
         """
         尝试解析字符串表达式，解析失败会报错
@@ -193,7 +202,9 @@ class Problem:
             # 三角形面积
             (r'\bSt([A-Z]{3})\b', r"self._get_triangle_area('\1')"),
             # 直线斜率和截距
-            (r'\b(k|b)([A-Z]{2})\b', r"self._get_line_\1('\2')")
+            (r'\b(k|b)([A-Z]{2})\b', r"self._get_line_\1('\2')"),
+            # 点到直线的距离
+            (r'\bd([A-Z])t([A-Z]{2})\b', r"self._get_distance_from_point_to_line('\1', '\2')")
         ]
         for pattern, repl in rules:
             expr = re.sub(pattern, repl, expr)

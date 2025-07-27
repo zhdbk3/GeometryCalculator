@@ -64,7 +64,9 @@ def to_raw_latex(expr: str) -> str:
         # xA -> x_A
         (r'\b(x|y)([A-Z])\b', r'\1_\2'),
         # kAB -> k_{AB}
-        (r'\b(k|b)([A-Z]{2})\b', r'\1_{\2}')
+        (r'\b(k|b)([A-Z]{2})\b', r'\1_{\2}'),
+        # dAtBC -> d_{A 到 BC}
+        (r'\bd([A-Z])t([A-Z]{2})\b', r'd_{\1 到 \2}')
     ]
     for pattern, repl in rules:
         expr = re.sub(pattern, repl, expr)
