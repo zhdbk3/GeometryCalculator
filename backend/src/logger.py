@@ -2,6 +2,7 @@ import os
 import datetime
 import logging
 import sys
+import traceback
 
 os.makedirs('log', exist_ok=True)
 
@@ -19,7 +20,8 @@ backend_logger = logging.getLogger('后端')
 
 
 def excepthook(exc_type: type[BaseException], exc_value: BaseException, exc_traceback) -> None:
-    backend_logger.error(exc_value)
+    s = ''.join(traceback.format_exception(exc_type, exc_value, exc_traceback))
+    backend_logger.error(s)
 
 
 sys.excepthook = excepthook

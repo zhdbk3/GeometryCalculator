@@ -9,7 +9,7 @@ from abc import ABC, abstractmethod
 from collections import deque
 import pickle
 
-from sympy import Symbol, Expr, simplify, Eq, Line2D, solve, Segment, Point2D, Matrix, acos, latex, Abs, oo
+from sympy import Symbol, Expr, simplify, Eq, Line2D, solve, Segment, Point2D, Matrix, acos, latex, Abs, sqrtdenest
 from sympy import sqrt, sin, cos, tan, pi, Integer  # noqa
 from sympy.logic.boolalg import BooleanTrue, BooleanFalse
 from webview import windows, SAVE_DIALOG, OPEN_DIALOG
@@ -165,6 +165,15 @@ class Problem:
             raise ValueError(f'直线 {name} 竖直，无法获取截距！')
         return -c / b
 
+    def _get_distance_from_point_to_line(self, point: str, line: str) -> Expr:
+        """
+        点到直线的距离
+        https://github.com/zhdbk3/GeometryCalculator/issues/6#issuecomment-3124395226
+        """
+        x0, y0 = self._get_sp_point(point).coordinates
+        a, b, c = self._get_line(line).coefficients
+        return Abs(a * x0 + b * y0 + c) / sqrt(a ** 2 + b ** 2)
+
     def _eval_str_expr(self, expr: str) -> Expr | Never:
         """
         尝试解析字符串表达式，解析失败会报错
@@ -193,7 +202,9 @@ class Problem:
             # 三角形面积
             (r'\bSt([A-Z]{3})\b', r"self._get_triangle_area('\1')"),
             # 直线斜率和截距
-            (r'\b(k|b)([A-Z]{2})\b', r"self._get_line_\1('\2')")
+            (r'\b(k|b)([A-Z]{2})\b', r"self._get_line_\1('\2')"),
+            # 点到直线的距离
+            (r'\bd([A-Z])t([A-Z]{2})\b', r"self._get_distance_from_point_to_line('\1', '\2')")
         ]
         for pattern, repl in rules:
             expr = re.sub(pattern, repl, expr)
@@ -462,6 +473,7 @@ class Problem:
         symbols = [target] + [self.math_objs[i].sp_symbol for i in self.symbol_names]  # type: ignore
         solutions = solve(eqs, symbols, dict=True)
 
-        result = set(s[target] for s in solutions)
+        # 关于 ``sqrtdenest``：https://github.com/zhdbk3/GeometryCalculator/issues/5
+        result = set(simplify(sqrtdenest(s[target])) for s in solutions)
         result = [f'{left} = {latex(i)}' for i in result]
         return result
