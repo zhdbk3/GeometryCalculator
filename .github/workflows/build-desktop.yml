@@ -63,7 +63,9 @@ jobs:
           working-directory: backend
           nuitka-version: main
           script-name: src/main.py
-          mode: standalone
+          # 在 macOS 上使用 app 模式，不然每加载一个 *.so 都要给一次权限
+          # 另一方面，这是 options-nanny 推荐的做法
+          mode: ${{ runner.os == 'macOS' && 'app' || 'standalone' }}
           include-data-files: ../LICENSE=LICENSE
           include-data-dir: src/ui=ui
           output-file: GeometryCalculator
@@ -72,9 +74,8 @@ jobs:
           macos-app-name: 几何计算器
           file-version: ${{ github.event.inputs.version }}
           macos-app-version: ${{ github.event.inputs.version }}
-          copyright: 'Copyright (C) 2025 着火的冰块nya'
+          copyright: 'Copyright (c) 2025 着火的冰块nya and contributors'
           windows-console-mode: ${{ github.event.inputs.windows-console-mode }}
-          disable-plugins: options-nanny
           mingw64: true
 
       - name: 上传成果
