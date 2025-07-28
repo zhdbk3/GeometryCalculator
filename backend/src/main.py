@@ -4,7 +4,7 @@ from logger import logging
 
 def global_except_handler(exc_type, exc_value, exc_traceback):
     logging.error(f"Uncaught exception: {exc_value}")
-    with open("/sdcard/crash_log.txt", "w") as f:
+    with open("log/crash_log.txt", "w") as f:
         traceback.print_exception(exc_type, exc_value, exc_traceback, file=f)
     sys.exit(1)
 
@@ -12,7 +12,7 @@ sys.excepthook = global_except_handler
 
 # 原应用代码
 if __name__ == "__main__":
-    with open("/sdcard/test_log.txt", "w") as f:
+    with open("log/test_log.txt", "w") as f:
         f.write("应用启动成功！\n")
     import webview
 
