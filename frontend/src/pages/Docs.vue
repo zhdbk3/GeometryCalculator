@@ -7,7 +7,7 @@
 <script setup lang="ts">
 import MarkdownIt from 'markdown-it';
 import docsMarkdown from 'pages/docs.md?raw';
-import 'github-markdown-css';
+import 'github-markdown-css/github-markdown-light.css';
 
 const md = new MarkdownIt({ html: true });
 const result = md.render(docsMarkdown);

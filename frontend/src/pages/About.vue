@@ -8,7 +8,7 @@
 import { ref, onMounted } from 'vue';
 import MarkdownIt from 'markdown-it';
 import aboutMarkdown from 'pages/about.md?raw';
-import 'github-markdown-css';
+import 'github-markdown-css/github-markdown-light.css';
 
 const md = new MarkdownIt({ html: true, linkify: true });
 
