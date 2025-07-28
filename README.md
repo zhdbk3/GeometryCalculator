@@ -39,6 +39,14 @@
 - [ ] 给软件设计一个图标
 - [ ] 打包为 APK
 
+## Windows 下无法运行？
+
+请用**管理员**身份打开 PowerShell，执行命令：
+
+```shell
+Get-ChildItem -Path <你的几何计算器文件夹路径> -Recurse -Filter *.dll | Unblock-File -Confirm:$false
+```
+
 ## 在开发模式下运行项目
 
 ### 1. 安装依赖

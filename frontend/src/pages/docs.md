@@ -2,8 +2,8 @@
 
 ## 其它语言
 
-* [English (US)](docs.en.md)
-* [简体中文](docs.md)
+- [English (US)](docs.en.md)
+- [简体中文](docs.md)
 
 # 未知数
 

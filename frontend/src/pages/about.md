@@ -2,8 +2,8 @@
 
 ## 其它语言
 
-* [English (US)](about.en.md)
-* [简体中文](about.md)
+- [English (US)](about.en.md)
+- [简体中文](about.md)
 
 ## 信息
 

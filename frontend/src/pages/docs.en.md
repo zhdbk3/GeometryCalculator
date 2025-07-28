@@ -2,8 +2,8 @@
 
 ## Other Languages
 
-* [English (US)](docs.en.md)
-* [简体中文](docs.md)
+- [English (US)](docs.en.md)
+- [简体中文](docs.md)
 
 # Unknown
 
@@ -23,31 +23,30 @@ Our expression parser is built on Python’s `eval` ~~(which means you can total
 
 ## Operations
 
-|     Symbol     |      Meaning      |
-|:--------------:|:-----------------:|
-|     `+`        | Addition          |
-|     `-`        | Subtraction       |
-|     `*`        | Multiplication    |
-|     `/`        | Division          |
-|    `dot`       | Dot product       |
-| `^` or `**`    | Exponentiation    |
+|   Symbol    |    Meaning     |
+| :---------: | :------------: |
+|     `+`     |    Addition    |
+|     `-`     |  Subtraction   |
+|     `*`     | Multiplication |
+|     `/`     |    Division    |
+|    `dot`    |  Dot product   |
+| `^` or `**` | Exponentiation |
 
 Note: The multiplication symbol `*` is required and cannot be omitted.
 
-
 ## Constants and Functions
 
-|   Code   |   Meaning    |
-|:--------:|:------------:|
-|  `pi`    | $\pi$        |
-| `sqrt`   | Square root  |
-| `sin`    | Sine         |
-| `cos`    | Cosine       |
-| `tan`    | Tangent      |
+|  Code  |   Meaning   |
+| :----: | :---------: |
+|  `pi`  |    $\pi$    |
+| `sqrt` | Square root |
+| `sin`  |    Sine     |
+| `cos`  |   Cosine    |
+| `tan`  |   Tangent   |
 
 **Note:** Functions must be called with parentheses.
 
-- ❌ Incorrect: `sin pi`  
+- ❌ Incorrect: `sin pi`
 - ✅ Correct: `sin(pi)`
 
 ---
