@@ -40,7 +40,7 @@ jobs:
       - name: 设置 Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12' # Version range or exact version of a Python version to use, using SemVer's version range syntax
+          python-version: '3.11.13' # Version range or exact version of a Python version to use, using SemVer's version range syntax
           architecture: 'x64' # optional x64 or x86. Defaults to x64 if not specified
           cache: 'pip'
           cache-dependency-path: |
@@ -55,8 +55,8 @@ jobs:
       # 因此，在 buildozer.spec 中的 requirements 应去掉 sympy
       - name: 复制 sympy 和 pywebview-android.jar
         run: |
-          cp -r /opt/hostedtoolcache/Python/3.12.11/x64/lib/python3.12/site-packages/sympy/ backend/src/
-          cp /opt/hostedtoolcache/Python/3.12.11/x64/lib/python3.12/site-packages/webview/lib/pywebview-android.jar backend/pywebview-android.jar
+          cp -r /opt/hostedtoolcache/Python/3.11.13/x64/lib/python3.11/site-packages/sympy/ backend/src/
+          cp /opt/hostedtoolcache/Python/3.11.13/x64/lib/python3.11/site-packages/webview/lib/pywebview-android.jar backend/pywebview-android.jar
 
       - name: 构建可执行文件
         uses: ArtemSBulgakov/buildozer-action@v1
