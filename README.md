@@ -47,6 +47,8 @@
 Get-ChildItem -Path <你的几何计算器文件夹路径> -Recurse -Filter *.dll | Unblock-File -Confirm:$false
 ```
 
+参考：https://github.com/r0x0r/pywebview/issues/1638#issuecomment-2896747582
+
 ## 在开发模式下运行项目
 
 ### 1. 安装依赖
