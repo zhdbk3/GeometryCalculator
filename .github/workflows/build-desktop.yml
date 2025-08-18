@@ -57,13 +57,10 @@ jobs:
 
       # https://github.com/zhdbk3/GeometryCalculator/issues/8
       - if: runner.os == 'Linux'
-        name: 补充 Linux GTK 依赖
+        name: 补充 Linux Qt 依赖  # GTK 不知道为什么用不了，我也不懂 Linux
         working-directory: backend
-        # https://pygobject.gnome.org/getting_started.html#ubuntu-logo-ubuntu-debian-logo-debian
         run: |
-          sudo apt install libgirepository-2.0-dev gcc libcairo2-dev pkg-config python3-dev gir1.2-gtk-4.0
-          pip install pycairo
-          pip install pywebview[gtk]
+          pip install pywebview[qt]
 
       - name: 构建可执行文件
         # https://github.com/Nuitka/Nuitka-Action/pull/73
