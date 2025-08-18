@@ -91,6 +91,5 @@ jobs:
         with:
           name: GeometryCalculator-v${{ github.event.inputs.version }}-${{ runner.os }}
           path: |
-            backend/build/main.dist/*
-            backend/build/main.app/Contents/*
+            ${{ runner.os == 'macOS' && 'backend/build/main.app/Contents/*' || 'backend/build/main.dist/*' }}
           include-hidden-files: true
