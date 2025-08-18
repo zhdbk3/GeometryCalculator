@@ -84,6 +84,7 @@ jobs:
           copyright: 'Copyright (c) 2025 着火的冰块nya and contributors'
           windows-console-mode: ${{ github.event.inputs.windows-console-mode }}
           mingw64: true
+          enable-plugins: ${{ runner.os == 'Linux' && 'pyqt6' || null }}
 
       - name: 上传成果
         uses: actions/upload-artifact@v4
