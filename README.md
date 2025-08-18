@@ -1,12 +1,9 @@
+简体中文 | [English (US)](README.en.md)
+ 
 > 啊对对对，我们都是初二的学生，用几何的方法做；你是初三的学生，用建系的高级方法做。我们的方法哪有建系快啊 😅
 > <p align="right">——我们初中一位数学老师</p>
 
 # 几何计算器 2
-
-## 其它语言
-
-* [English (US)](README.en.md)
-* [简体中文](README.md)
 
 借助计算机的强大算力，使用解析几何暴力计算几何问题！
 
@@ -32,7 +29,7 @@
 
 ## 致谢
 
-见 [`ACKNOWLEDGMENTS.md`](ACKNOWLEDGMENTS.md)
+见 [`ACKNOWLEDGMENTS.md`](ACKNOWLEDGMENTS.md)。
 
 ## TODO
 

@@ -1,3 +1,5 @@
+[简体中文](ACKNOWLEDGMENTS.md) | English (US)
+
 # Acknowledgments to Geometry Calculator ver. 2 Contributors
 
 <a href="https://github.com/zhdbk3/GeometryCalculator/graphs/contributors">
@@ -10,17 +12,12 @@ Made with [contrib.rocks](https://contrib.rocks).
 
 - GitHub Repository：https://github.com/YuzhenQin/GeometryCalculator
 
-|      Name       |                     BiliBili                     |                  GitHub                   |
-|:---------------:|:------------------------------------------------:|:-----------------------------------------:|
-|    YuzhenQin    | [BiliBili](https://space.bilibili.com/470160343) |  [GitHub](https://github.com/YuzhenQin1)  |
-|  ElectroUnity   | [BiliBili](https://space.bilibili.com/562633104) | [GitHub](https://github.com/ElectroUnity) |
-|    DingerBtn    | [BiliBili](https://space.bilibili.com/668182235) |  [GitHub](https://github.com/DingerBtn)   |
-|    GreshAnt     |                        -                         | [GitHub](https://github.com/Kevin-O-Hsu)  |
-
-## Other Languages
-
-* [English (US)](ACKNOWLEDGMENTS.en.md)
-* [简体中文](ACKNOWLEDGMENTS.md)
+|     Name     |                     BiliBili                     |                  GitHub                   |
+|:------------:|:------------------------------------------------:|:-----------------------------------------:|
+|  YuzhenQin   | [BiliBili](https://space.bilibili.com/470160343) |  [GitHub](https://github.com/YuzhenQin1)  |
+| ElectroUnity | [BiliBili](https://space.bilibili.com/562633104) | [GitHub](https://github.com/ElectroUnity) |
+|  DingerBtn   | [BiliBili](https://space.bilibili.com/668182235) |  [GitHub](https://github.com/DingerBtn)   |
+|   GreshAnt   |                        -                         | [GitHub](https://github.com/Kevin-O-Hsu)  |
 
 ## Open Source Projects Used or Referenced
 

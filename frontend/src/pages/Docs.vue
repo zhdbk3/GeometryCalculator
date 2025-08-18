@@ -1,26 +1,7 @@
 <template>
-  <q-page>
-    <div class="markdown-body" v-html="result" v-katex></div>
-  </q-page>
+  <RenderMarkdown :raw="$t('markdown.docs')" />
 </template>
 
 <script setup lang="ts">
-import MarkdownIt from 'markdown-it';
-import docsMarkdown from 'pages/docs.md?raw';
-import 'github-markdown-css/github-markdown-light.css';
-
-const md = new MarkdownIt({ html: true });
-const result = md.render(docsMarkdown);
+import RenderMarkdown from 'pages/RenderMarkdown.vue';
 </script>
-
-<style scoped>
-.markdown-body {
-  background-color: transparent;
-}
-</style>
-
-<style>
-.markdown-body .katex {
-  font-size: 1.1em;
-}
-</style>

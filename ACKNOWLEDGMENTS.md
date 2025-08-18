@@ -1,3 +1,5 @@
+简体中文 | [English (US)](ACKNOWLEDGMENTS.en.md)
+
 # 感谢几何计算器 2 的贡献者
 
 <a href="https://github.com/zhdbk3/GeometryCalculator/graphs/contributors">
@@ -16,11 +18,6 @@ Made with [contrib.rocks](https://contrib.rocks).
 |    ElectroUnity    | [哔哩哔哩](https://space.bilibili.com/562633104) | [GitHub](https://github.com/ElectroUnity) |
 | 薛定谔的按钮 (DingerBtn) | [哔哩哔哩](https://space.bilibili.com/668182235) |  [GitHub](https://github.com/DingerBtn)   |
 |      GreshAnt      |                      -                       | [GitHub](https://github.com/Kevin-O-Hsu)  |
-
-## 其它语言
-
-* [English (US)](ACKNOWLEDGMENTS.en.md)
-* [简体中文](ACKNOWLEDGMENTS.md)
 
 ## 感谢开源项目
 

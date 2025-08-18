@@ -1,41 +1,36 @@
+[简体中文](README.md) | English (US)
+
 > Yeah, you're absolutely right - we're all just 8th graders using pure geometric methods, and you're in 9th grade, already learning coordinate geometry.
-How could our method possibly be faster than just setting up a coordinate system??? 😅
+> How could our method possibly be faster than just setting up a coordinate system??? 😅
 > <p align="right"> - One of our middle school math teachers</p>
 
 # Geometry Calculator
 
-## Other Languages
-
-* [English (US)](README.en.md)
-* [简体中文](README.md)
-
 Take advantage of your PC’s raw horsepower—brute‑force your geometry problems with analytic geometry!
 
-* [User Guide](frontend/src/pages/docs.en.md)
-* [About Geometry Calculator Ver 2](frontend/src/pages/about.en.md)
+* [User Guide](frontend/src/i18n/en-US/docs.md)
+* [About Geometry Calculator Ver 2](frontend/src/i18n/en-US/about.md)
 
 ## What’s New
 
 * ✨ **Sleeker UI** - Full LaTeX support, friendly to humans ~~and cat-girls~~
 * ⚡ **Snappy Performance** - Front-end and back‑end are completely seperated, so the lag from the old version is gone
 * 💪 **More Powerful features!!**
-
-  * 🔢 Add unknowns and restrict their value ranges
-  * 📍 Smarter, more intuitive point‑adding workflow
-  * 📈 Major expression‑parser overhaul
-
-    * 👍 Human‑friendly syntax—no more weird symbols
-    * ➡️ Vector operations supported
-    * 📄 Conditions can be shown in their original form (rendered with LaTeX), making them easier to manage
-  * 📐 Lines: quick parallel / perpendicular tools
-  * 🔺 Fast composite constraints: triangle congruence & similarity
-  * 🧩 One‑click special shapes: parallelogram, rhombus, rectangle, square, equilateral triangle
-  * 🗑️ Cleaner condition deletion
-  * 💾 Save data to file & load it back later
+    * 🔢 Add unknowns and restrict their value ranges
+    * 📍 Smarter, more intuitive point‑adding workflow
+    * 📈 Major expression‑parser overhaul
+        * 👍 Human‑friendly syntax—no more weird symbols
+        * ➡️ Vector operations supported
+        * 📄 Conditions can be shown in their original form (rendered with LaTeX), making them easier to manage
+    * 📐 Lines: quick parallel / perpendicular tools
+    * 🔺 Fast composite constraints: triangle congruence & similarity
+    * 🧩 One‑click special shapes: parallelogram, rhombus, rectangle, square, equilateral triangle
+    * 🗑️ Cleaner condition deletion
+    * 💾 Save data to file & load it back later
 
 ## Acknowledgments
 
-See [`ACKNOWLEDGMENTS.en.md`](ACKNOWLEDGMENTS.en.md)
+See [`ACKNOWLEDGMENTS.en.md`](ACKNOWLEDGMENTS.en.md).
 
 ## TODO
 
